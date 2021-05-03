@@ -1,0 +1,27 @@
+default menu.c32
+prompt 0
+noescape 1
+allowoptions 0
+menu title Ultimate Deployment Appliance
+menu color tabmsg 37;40      #80ffffff #00000000
+menu color hotsel 30;47      #40000000 #20ffffff
+menu color sel 30;47      #40000000 #20ffffff
+menu color scrollbar 30;47      #40000000 #20ffffff
+menu width 80
+menu margin 22
+menu passwordmargin 26
+menu rows 6
+menu tabmsgrow 15
+menu cmdlinerow 15
+menu endrow 24
+menu passwordrow 12
+menu timeoutrow 13
+menu vshift 6
+menu passprompt Enter Password:
+# menu master passwd test
+
+label LOCALBOOT
+  menu label ^Boot local disk
+  localboot 0
+  timeout 100
+

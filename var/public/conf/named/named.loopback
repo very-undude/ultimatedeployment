@@ -1,0 +1,13 @@
+$TTL 3D
+
+@       IN      SOA     localhost. root.localhost. (
+                        2013050101      ; Serial
+                        8H              ; Refresh
+                        2H              ; Retry
+                        4W              ; Expire
+                        1D              ; Minimum TTL
+                        )
+
+       IN      NS      localhost.
+
+1      IN      PTR     localhost.

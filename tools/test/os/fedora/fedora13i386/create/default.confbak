@@ -1,0 +1,9 @@
+module=os
+action=new
+step=2
+button=finish
+OS=fedora
+OSFLAVOR=fedora13i386
+MOUNT=pub
+FILE1=XFEDISO
+MOUNTONBOOT=on

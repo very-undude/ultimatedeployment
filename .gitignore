@@ -1,0 +1,20 @@
+# Remove Apple stuff
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
+# dont upload settings file and output for test and build
+tools/settings.conf
+tools/build/settings.conf
+tools/test/settings.conf
+tools/test/out
+tools/build/tmp
+
+# skip ova files in the esx directory they were probably downloaded with the getova script
+tools/esx/*.ova
+
+# dont upload drivers
+tools/test/services/binl/addriver/*.inf
+tools/test/services/binl/addriver/*.sys
+

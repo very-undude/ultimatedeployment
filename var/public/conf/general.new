@@ -1,0 +1,18 @@
+# Global variables
+#
+# You can specify variables in this file that you can use in your templates
+# surrounded by square brackets.
+#
+#
+# Examples:
+#
+#MYHOMEDOMAIN=example.org
+#MYMAILSERVER=mail.example.org
+# 
+# For the ova file deployment you will need to specify the following variables
+#
+#UDA_OVA_DATASTORE=datastore01
+#UDA_OVA_VM_NETWORK=VM Network
+#UDA_OVA_VI_USERNAME=root
+#UDA_OVA_VI_PASSWORD=MyR00tPa55word
+#UDA_OVA_VI_IP=10.0.0.150

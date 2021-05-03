@@ -1,0 +1,52 @@
+windows7;Windows 7,8,10,2008,2012,2016,2019
+windows5;Windows 2000,XP,2003
+esx2;VMware ESX Server 2.X.X
+esx3;VMware ESX Server 3.X.X
+esx4;VMware ESX Server 4.X.X
+esx3i;VMware ESX 3i Installable
+esx4i;VMware ESX 4i Installable
+esx41i;VMware ESX 4.1i Installable
+esx5;VMware ESX 5i Installable
+esx6;VMware ESX 6i Installable
+esx67;VMware ESX 6.7i Installable
+esx7;VMware ESX 7i Installable
+xen5;Xen Server 5 and 6
+xen7;Xen Server 7
+#debian8;Debian 8 (Jessie) i386
+debian8x64;Debian 8 (Jessie) amd64
+debian9;Debian 9 (Stretch) i386
+debian9x64;Debian 9 (Stretch) amd64
+debian10;Debian 10 (Buster) i386
+debian10x64;Debian 10 (Buster) amd64
+centos4;Centos 4.X
+centos5;Centos 5.X
+centos6;Centos 6.X
+centos7;Centos 7.X
+centos8;Centos 8.X
+redhat4;RedHat 4.X
+redhat5;Redhat 5.X
+redhat6;Redhat 6.X
+redhat7;Redhat 7.X
+redhat8;Redhat 8.X
+fedora;Fedora 9 - 15
+fedora16;Fedora 16 and up
+suse10;Suse 10
+suse11;Suse 11
+suse12;Suse 12
+suse15;Suse 15
+ubuntu8;Ubuntu 8 i386
+ubuntu8x64;Ubuntu 8 amd64
+ubuntu;Ubuntu 9 - 19 i386
+ubuntux64;Ubuntu 9 - 19 amd64
+#sol9x86;Solaris 9 x86
+#sol9sparc;Solaris 9 Sparc
+sol10x86;Solaris 10 x86
+sol10sparc;Solaris 10 Sparc
+vsim8;Netapp Virtual Simulator 8.X
+vsim9;Netapp Virtual Simulator 9.X
+manual;Manual Configuration
+gparted;Gparted Live (0.3.7.2 to 0.4)
+gparted051;Gparted Live (0.5 and up)
+clonezilla;Clonezilla Live (1.2.0-25 to 1.2.2)
+clonezilla123;Clonezilla Live (1.2.3 and up)
+bartpe;BartPE

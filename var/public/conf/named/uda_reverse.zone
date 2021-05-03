@@ -1,0 +1,18 @@
+@       IN      SOA     uda.example.local. uda.example.local.     (
+                        2007040301      ;serial
+                        14400           ;refresh
+                        3600            ;retry
+                        604800          ;expire
+                        10800           ;minimum
+)
+
+
+0.168.192.in-addr.arpa.       IN      NS       uda.example.local.
+
+
+5                IN      PTR     mail.example.local.
+6                IN      PTR     uda.example.local.
+11               IN      PTR     server1.example.local.
+12               IN      PTR     server2.example.local.
+13               IN      PTR     server3.example.local.
+14               IN      PTR     server4.example.local.

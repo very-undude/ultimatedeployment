@@ -1,0 +1,8 @@
+MOUNTONBOOT=N/A
+TYPE=LOCAL
+MOUNT=local
+SHARE=local
+MOUNTPOINT=/local
+DEVICE=/dev/mapper/udavg-locallv
+FILESYSTEM=xfs
+HOSTNAME=localhost

@@ -1,0 +1,1136 @@
+data = '{ "supportmatrix":
+  [
+    { "type" :     "windows", 
+      "name" :     "Microsoft Windows",
+      "versions" : [
+                     {
+                       "number":       "2000",
+                       "architecture": "i386",
+                       "version":      "Server",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2ks.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "348",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "amd",
+                                                                           "driver" :  "pcnet32",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "scsi",
+                                                                           "size" :       "2",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "Windows2000Server.iso",
+                                  "md5":      "cb1b15d3b29b58d9dc8c801bf001759f",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "2000",
+                       "architecture": "i386",
+                       "version":      "Desktop",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2ks.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "348",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "amd",
+                                                                           "driver" :  "pcnet32",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "scsi",
+                                                                           "size" :       "2",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "",
+                                  "md5":      "",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "XP",
+                       "architecture": "i386",
+                       "version":      "Professional",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "wxpi386.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "512",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "amd",
+                                                                           "driver" :  "pcnet32",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_xp_professional_with_service_pack_3_x86_cd_x14-80428.iso",
+                                  "md5":      "f424a52153e6e5ed4c0d44235cf545d5",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "XP",
+                       "architecture": "x64",
+                       "version":      "Professional",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "?", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "?", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "",
+                                  "md5":      "",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "2003",
+                       "architecture": "i386",
+                       "version":      "Server",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2k3i386.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "512",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "x11-03905.iso",
+                                  "md5":      "9f2aef7a274cce3147fe57a02145f3f6",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "2003",
+                       "architecture": "x64",
+                       "version":      "Server",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "experimental", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "X13-05774.img",
+                                  "md5":      "f0dc235b52daa9a36de90c93703c466d",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                {
+                                  "filename": "X13-05825.img",
+                                  "md5":      "1bdd6e1cc7973e2f70c324de3d890cea",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "BartPE",
+                       "architecture": "i386",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2k3i386.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "512",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "x11-03905.iso",
+                                  "md5":      "9f2aef7a274cce3147fe57a02145f3f6",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                {
+                                  "filename": "BARTPE2K3.ISO",
+                                  "md5":      "db0296bd931777222fca1de70f264f4c",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "Vista",
+                       "architecture": "i386",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "no", 
+                                           "build"   : "",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "",
+                                  "md5":      "",
+                                  "download": "",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "Vista",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "no", 
+                                           "build"   : "",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "",
+                                  "md5":      "",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     },
+                     {
+                       "number":       "7",
+                       "architecture": "i386",
+                       "version":      "Ultimate",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "win7i386.zip",
+                                                     "architecture":  "i386",
+                                                     "cpus":          "1",
+                                                     "memory":        "1024",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "windows7x86.iso",
+                                  "md5":      "cbf5d16bc21696b6c387f2b17a6cae6c",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "7",
+                       "architecture": "x64",
+                       "version":      "Ultimate",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "win7x64.zip",
+                                                     "architecture":  "x64",
+                                                     "cpus":          "1",
+                                                     "memory":        "1024",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "Windows7x64NL.iso",
+                                  "md5":      "54f60f0c9fac465a2fd5965eb65e11a2",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "8",
+                       "architecture": "i386",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_8_x86_dvd_915417.iso",
+                                  "md5":      "4252407333706df89a0c654924dd3f06",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "8",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_8_x64_dvd_915440.iso",
+                                  "md5":      "0e8f2199fae18fe510c23426e68f675a",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "10",
+                       "architecture": "i386",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "Win10_1909_Dutch_x32.iso",
+                                  "md5":      "15e25c82c2e5b1b107d86d6417f879d8",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "10",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "Win10_1909_Dutch_x64",
+                                  "md5":      "71d6414208daac9068459b5eca08f521",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "2008",
+                       "architecture": "i386",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "",
+                                  "md5":      "",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                
+                              ]
+                     },
+                     {
+                       "number":       "2008",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2k8x64.zip",
+                                                     "architecture":  "x64",
+                                                     "cpus":          "1",
+                                                     "memory":        "1024",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "Intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_server_2008_r2_with_sp1_x64_dvd_617601.iso",
+                                  "md5":      "8dcde01d0da526100869e2457aafb7ca",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                {
+                                  "filename": "7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso",
+                                  "md5":      "?",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     },
+                     {
+                       "number":       "2008",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "w2k8x64.zip",
+                                                     "architecture":  "x64",
+                                                     "cpus":          "1",
+                                                     "memory":        "1024",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "Intel",
+                                                                           "driver" :  "e1000",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "ide",
+                                                                           "size" :       "10",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_server_2008_r2_with_sp1_x64_dvd_617601.iso",
+                                  "md5":      "8dcde01d0da526100869e2457aafb7ca",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                                {
+                                  "filename": "7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso",
+                                  "md5":      "?",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     },
+                     {
+                       "number":       "2012",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_server_2012_x64_dvd_915478.iso",
+                                  "md5":      "da91135483e24689bfdaf05d40301506",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     },
+                     {
+                       "number":       "2016",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "x64",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                                   },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_server_2016_x64_dvd_9327751.iso",
+                                  "md5":      "ae9025720b607a376ee84448637f6763",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     },
+                     {
+                       "number":       "2019",
+                       "architecture": "x64",
+                       "version":      "",
+                       "support":      [ 
+                                         {
+                                           "version" : "1", 
+                                           "status"  : "no", 
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "2", 
+                                           "status"  : "supported", 
+                                           "build"   : "?",
+                                           "comment" : ""
+                                         },
+                                         {
+                                           "version" : "3", 
+                                           "status"  : "supported", 
+                                           "comment" : ""
+                                         },
+                                       ],
+                       "images": [
+                                          {
+                                                     "format":        "vmware",
+                                                     "filename":      "",
+                                                     "architecture":  "x64",
+                                                     "cpus":          "",
+                                                     "memory":        "",
+                                                     "nics":          [
+                                                                        { 
+                                                                           "vendor" :  "",
+                                                                           "driver" :  "",
+                                                                           "comment":  ""
+                                                                        },
+                                                                      ],
+                                                     "disks":         [
+                                                                        { 
+                                                                           "controller" : "",
+                                                                           "size" :       "",
+                                                                        },
+                                                                      ]
+                                          },
+                                 ],
+                       "iso": [
+                                {
+                                  "filename": "en_windows_server_2019_x64_dvd_3c2cf1202.iso",
+                                  "md5":      "37c51cc09182237ae2c30c9d8ce3c41e",
+                                  "download": "n/a",
+                                  "comment":  "",
+                                },
+                              ]
+                     }
+                   ]
+    },
+  ]
+}' ;

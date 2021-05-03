@@ -1,0 +1,18 @@
+[Unit]
+Description=UDA Boot Service
+After=getty@tty2.service
+
+[Service]
+Type=oneshot
+ExecStart=/var/public/bin/boot.sh
+User=root
+StandardInput=tty
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty2
+TTYReset=yes
+TTYVHangup=yes
+#TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

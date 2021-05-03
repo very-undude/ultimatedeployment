@@ -1,0 +1,14 @@
+[Unit]
+Description=Tftp Server
+Requires=tftp.socket
+Documentation=man:in.tftpd
+Requires=network.target
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/in.tftpd -T 6000000 -v -v -v -m /etc/tftpd.conf -s /var/public/tftproot
+StandardInput=socket
+
+[Install]
+Also=tftp.socket
+WantedBy=multi-user.target

@@ -1,0 +1,47 @@
+# Sample ovftool configuration file
+
+### This skips the yes/no question for storing the SSL fingerprint
+noSSLVerify
+
+##### Source
+acceptAllEulas
+sourceType=OVA
+
+##### Destination
+datastore=[UDA_OVA_DATASTORE]
+name=[TEMPLATE]_[SUBTEMPLATE]
+net:VM Network=[UDA_OVA_VM_NETWORK]
+#vmFolder=Production
+#targetType=VI
+powerOn
+overwrite
+
+#### diskMode
+#diskMode=monolithicSparse
+#diskMode=monolithicFlat
+#diskMode=twoGbMaxExtentSparse
+#diskMode=twoGbMaxExtentFlat
+#diskMode=sparse
+#diskMode=flat
+#### diskMode for vSphere targets
+#diskMode=seSparse
+#diskModeeagerZeroedThick
+diskMode=thin
+#diskMode=thick
+
+##### Logging
+# Log transfer Header data
+X:logTransferHeaderData
+# Logfile
+#X:logFile=/local/ovftool.[TEMPLATE].[SUBTEMPLATE].log
+# Log to console
+X:logToConsole
+# Log level
+#X:logLevel=none
+#X:logLevel=quiet
+#X:logLevel=panic
+X:logLevel=error
+#X:logLevel=warning
+#X:logLevel=verbose
+#X:logLevel=trivia
+

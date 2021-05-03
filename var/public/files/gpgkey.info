@@ -1,0 +1,11 @@
+%echo Generating a default key
+Key-Type: default
+Subkey-Type: default
+Name-Real: Ultimate Deployment Appliance
+Name-Comment: http://www.ultimatedeployment.org
+Name-Email: info@ultimatedeployment.org
+Expire-Date: 0
+#Passphrase:
+# Do a commit here, so that we can later print "done" :-)
+%commit
+%echo done

@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase "/debian10" 
+RewriteRule "^([^\/]+)/dists/([^\/]+)/Release\.gpg" "$1.Release.gpg"
+RewriteRule "^([^\/]+)/dists/([^\/]+)/InRelease" "$1.InRelease"

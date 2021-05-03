@@ -1,0 +1,5 @@
+FILE QUARANTINED
+
+Microsoft Forefront Security for Exchange Server removed a file since it was found to match a filter.
+File name: "uda-2.0.26.tgz->Unknown->./files/files/fdapm.com"
+Filter name: "FILE FILTER= unnamed: *.com"

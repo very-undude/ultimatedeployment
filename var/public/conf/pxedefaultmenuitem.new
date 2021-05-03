@@ -1,0 +1,6 @@
+[SEPARATOR]
+label [TEMPLATE]
+  menu label [TEMPLATE] [DESCRIPTION]
+  [PXEPASSWD]
+  kernel vesamenu.c32
+  append pxelinux.cfg/templates/[TEMPLATE].menu

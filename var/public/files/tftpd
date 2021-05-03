@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# ntpd		This shell script takes care of starting and stopping
+#		ntpd (NTPv4 daemon).
+#
+# chkconfig: - 58 74
+# description: ntpd is the NTPv4 daemon. \
+# The Network Time Protocol (NTP) is used to synchronize the time of \
+# a computer client or server to another server or reference time source, \
+# such as a radio or satellite receiver or modem.
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+tftpmap=/etc/tftpd.conf
+tftproot=/var/public/tftproot
+
+RETVAL=0
+prog="tftpd"
+
+start() {
+        # Start daemons.
+        echo -n $"Starting $prog: "
+        /usr/sbin/in.tftpd -T 6000000 -l -v -v -v -m $tftpmap -s $tftproot
+        RETVAL=$?
+        return $RETVAL
+}
+
+stop() {
+        echo -n $"Shutting down $prog: "
+	pkill -f in.tftpd
+        RETVAL=$?
+        return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo_success || echo_failure
+        echo
+        ;;
+  stop)
+        stop
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo_success || echo_failure
+        echo
+        ;;
+  restart|reload)
+        stop
+        [ $RETVAL -eq 0 ] && echo_success || echo_failure
+        echo
+        sleep 2
+        start
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo_success || echo_failure
+        echo
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $RETVAL
+

@@ -1,0 +1,15 @@
+$TTL 8h
+example.local.    IN      SOA     uda.example.local.  root.example.local. (
+                       2006211201
+                       10800
+                       3600
+                       3600000
+                       86400 )
+example.local.            IN      NS               uda.example.local.
+example.local.            IN      MX      10       mail.example.local.
+mail.example.local.       IN      A                192.168.0.5
+uda.example.local.        IN      A                192.168.0.6
+server1.example.local.    IN      A                192.168.0.11
+server2.example.local.    IN      A                192.168.0.12
+server3.example.local.    IN      A                192.168.0.13
+server4.example.local.    IN      A                192.168.0.14

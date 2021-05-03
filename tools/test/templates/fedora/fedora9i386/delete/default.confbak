@@ -1,0 +1,3 @@
+module=templates
+action=delete
+template=fedora9i386

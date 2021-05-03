@@ -1,0 +1,25 @@
+module=templates
+action=save
+template=fedora12i386
+OS=fedora
+FLAVOR=fedora12i386
+OVASOURCE=
+NEWOVASOURCE=
+NEWOVAMOUNT=local
+NEWOVAFILE=/ova/builtin/fedora/default.ova
+NEWTEMPLATE=fedora12i386
+NEWDESCRIPTION=Fedora XFEDVER i386
+NEWFLAVOR=fedora12i386
+NEWMAC=10-0c-29-53-49-19
+NEWGENERATEMAC=on
+NEWPUBLISH=on
+NEWPXEPASSWD=
+KERNEL=vmlinuz.[OS].[FLAVOR]
+CMDLINE=ks=http://[UDA_IPADDR]/kickstart/[TEMPLATE]/[SUBTEMPLATE].cfg initrd=initrd.[OS].[FLAVOR] ramdrive_size=8192
+CONFIGFILE1=/var/public/conf/templates/fedora12i386.cfg
+PUBLISHFILE1=/var/public/www/kickstart/fedora12i386/[SUBTEMPLATE].cfg
+PUBLISHDIR1=/var/public/www/kickstart/fedora12i386
+MOUNT=local
+FILE1=/ova/builtin/fedora/default.ova
+NEWOVADESTINATION=vi://[UDA_OVA_VI_USERNAME]:[UDA_OVA_VI_PASSWORD]@[UDA_OVA_VI_IP]/
+OVOFILE=/var/public/conf/templates/fedora12i386.ovo

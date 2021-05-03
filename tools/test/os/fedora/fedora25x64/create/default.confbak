@@ -1,0 +1,9 @@
+module=os
+action=new
+step=2
+button=finish
+OS=fedora16
+OSFLAVOR=fedora25x64
+MOUNT=pub
+FILE1=XFEDISO
+MOUNTONBOOT=on

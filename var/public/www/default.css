@@ -1,0 +1,207 @@
+body { 
+    color: black; 
+    background: white; 
+    font-family: arial,sans-serif;
+    margin-left: 5%; 
+    margin-right: 5%;
+}
+
+pre { 
+  color: black; 
+  background: #E6E6F9; 
+  font-family: monospace; 
+  border: solid; 
+  border-width: thin; 
+  padding: 0.5em;
+}
+
+h1 { 
+  font-size: 200%; 
+  color: #05057A;
+}
+
+h2 { 
+  padding: 0.5em;
+  font-size: 150%; 
+  color: #05057A; 
+}
+
+h3 { 
+  font-size: 125%; 
+  color: black;
+}
+
+table {
+   border-collapse: collapse;
+   border-width: 2;
+   font-size: 85%;
+}
+
+td.menu0 {
+   font-weight: bold ;
+   font-size: 120%;
+   border-width: 1;
+   width: 100px;
+}
+
+td.menu1 {
+   background-color: #05057A;
+   font-weight: bold ;
+   color: white;
+   border-width: 1;
+   width: 100px;
+}
+
+td.menu2 {
+   font-weight: normal ;
+   padding-left: 10px;
+   border-width: 1;
+   border-color: #05057A;
+   width: 100px;
+}
+
+tr.tabbed {
+   border-collapse: collapse;
+   font-size: 100%;
+   background-color: #05057A;
+   font-weight: bold ;
+   color: white;
+   min-width: 100%;
+   height: 5%;
+}
+
+td.tabcontent {
+  border-style: none solid solid solid; 
+  border-width: thin;
+  padding-top: 30px;
+  padding-left: 10px;
+ }
+
+tr.tableheader {
+    background-color: #05057A;
+    font-weight: bold ;
+    color: white;  
+}
+
+td.tab {
+  background-color: #05057A ;
+  min-width: 33% ;
+  border-right: 1px white inset ;
+  }
+
+
+.toolbarbutton:active .toolbarbutton:focus {
+    border-color: black;
+}
+
+.toolbarbutton {
+   padding: 0 0 0 5px;
+   font-size: 70%;
+   text-align: center;
+   background-color: transparent;
+   background-repeat:   no-repeat ;
+   background-position:  center left ;
+   width: 90px;
+   height: 30px;
+}
+
+
+.toolbarbutton#Mount { background-image: url('/icon/connect.png'); }
+.toolbarbutton#Upgrade { background-image: url('/icon/pill_add.png'); }
+.toolbarbutton#Database { background-image: url('/icon/database.png'); }
+.toolbarbutton#Next { background-image: url('/icon/resultset_next.png'); }
+.toolbarbutton#Previous { background-image: url('/icon/resultset_previous.png'); }
+.toolbarbutton#Finish { background-image: url('/icon/resultset_last.png'); }
+.toolbarbutton#Cancel { background-image: url('/icon/cancel.png'); }
+.toolbarbutton#Logfile { background-image: url('/icon/page_white_text.png'); }
+.toolbarbutton#Back { background-image: url('/icon/cancel.png'); }
+.toolbarbutton#Start { background-image: url('/icon/control_play_blue.png'); }
+.toolbarbutton#Stop { background-image: url('/icon/control_stop_blue.png'); }
+.toolbarbutton#Restart { background-image: url('/icon/control_repeat_blue.png'); }
+.toolbarbutton#Configure { background-image: url('/icon/page_edit.png'); }
+.toolbarbutton#Edit { background-image: url('/icon/page_edit.png'); }
+.toolbarbutton#Copy { background-image: url('/icon/page_copy.png'); }
+.toolbarbutton#Delete { background-image: url('/icon/page_delete.png'); }
+.toolbarbutton#New { background-image: url('/icon/page_add.png'); }
+.toolbarbutton#Viewlog { background-image: url('/icon/document-print-preview.png'); }
+.toolbarbutton#Top { background-image: url('/icon/go-top.png'); }
+.toolbarbutton#Bottom { background-image: url('/icon/go-bottom.png'); }
+.toolbarbutton#Up { background-image: url('/icon/go-up.png'); }
+.toolbarbutton#Down { background-image: url('/icon/go-down.png'); }
+.toolbarbutton#Save { background-image: url('/icon/accept.png'); }
+.toolbarbutton#Add { background-image: url('/icon/add.png'); }
+.toolbarbutton#Download { background-image: url('/icon/page_white_put.png'); }
+.toolbarbutton#Upload { background-image: url('/icon/page_white_get.png'); }
+.toolbarbutton#Unmount { background-image: url('/icon/disconnect.png'); }
+.toolbarbutton#Shutdown { background-image: url('/icon/control_stop_blue.png'); }
+.toolbarbutton#Reboot { background-image: url('/icon/control_repeat_blue.png'); }
+.toolbarbutton#Apply { background-image: url('/icon/accept.png'); }
+.toolbarbutton#Ok { background-image: url('/icon/accept.png'); }
+.toolbarbutton#Network { background-image: url('/icon/computer_edit.png') }
+.toolbarbutton#Password { background-image: url('/icon/computer_key.png') }
+.toolbarbutton#Variables { background-image: url('/icon/table.png') }
+.toolbarbutton#Diskspace { background-image: url('/icon/drive.png') }
+.toolbarbutton#Version { background-image: url('/icon/information.png') }
+.toolbarbutton#Help { background-image: url('/icon/help.png') }
+.toolbarbutton#Extend { background-image: url('/icon/drive_add.png') }
+.toolbarbutton#Sort { background-image: url('/icon/table_sort.png') }
+.toolbarbutton#VMTools { background-image: url('/icon/wrench.png') }
+.toolbarbutton#Kill { background-image: url('/icon/stop.png') }
+.toolbarbutton#Cleanup { background-image: url('/icon/wand.png') }
+.toolbarbutton#View { background-image: url('/icon/eye.png') }
+.toolbarbutton#Actions { background-image: url('/icon/note.png') }
+.toolbarbutton#Actionlist { background-image: url('/icon/note.png') }
+.toolbarbutton#PXE { background-image: url('/icon/server_lightning.png') }
+.toolbarbutton#Esx3NoSan { background-image: url('/icon/script.png') }
+.toolbarbutton#Esx4NoSan { background-image: url('/icon/script.png') }
+.toolbarbutton#WinPE { background-image: url('/icon/monitor_lightning.png') }
+.toolbarbutton#Drivers { background-image: url('/icon/monitor_lightning.png') }
+.toolbarbutton#PowerShell { background-image: url('/icon/script_edit.png') }
+.toolbarbutton#OvfTool { background-image: url('/icon/folder_wrench.png') }
+.toolbarbutton#Deploy { background-image: url('/icon/cog_go.png') }
+
+
+td {
+  padding: 2px ;
+}
+
+  div.box { border: solid; border-width: thin; width: 100% }
+  div.center { text-align:center }
+  .right { float:right }
+  .left { float:left }
+  div.color {
+    background: #ADD7E6;
+    padding: 0.5em;
+    border: none;
+    font-family: monospace;
+  }
+  strong { font-size: 90%; color: red }
+  .gb { color: #197D1D; font-size: 110%; }
+  .noborder { border-style: none }  
+  li.sp { padding-bottom:12px }
+  
+  a:link {color:blue}
+  a:visited {color:purple}
+  a:focus {color:teal}
+  a:hover {color:teal}
+  a:active {color:red}  
+  
+  a.menu1:link {color:white; text-decoration: none}
+  a.menu1:visited {color:white; text-decoration: none}
+  a.menu1:focus {color:white; text-decoration: none}
+  a.menu1:active {color:white; text-decoration: none}
+  a.menu1:hover {color:white; text-decoration: none}
+
+  a.menu2:link {color:#05057A; text-decoration: none}
+  a.menu2:visited {color:#05057A; text-decoration: none}
+  a.menu2:focus {color:#05057A; text-decoration: none}
+  a.menu2:active {color:#05057A; text-decoration: none}
+  a.menu2:hover {color:#05057A; text-decoration: none}
+
+  li:hover { color: teal;}
+
+  li.file { list-style-image: url('/icon/page_white_text.png'); }
+  li.iso { list-style-image: url('/icon/cd.png'); }
+  li.dir { list-style-image: url('/icon/folder.png'); }
+  li.updir { list-style-image: url('/icon/folder.png'); }
+

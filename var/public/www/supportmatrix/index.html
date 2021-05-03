@@ -1,0 +1,121 @@
+<HTML>
+
+  <HEAD>
+  </HEAD>
+  <BODY>
+
+  <H1>Support Matrix</H1>
+
+  <TABLE ID=supportmatrix></TABLE>
+
+  <SCRIPT TYPE="text/javascript">
+
+function myFunction(arr) {
+    var out = '' ;
+    var m = arr.supportmatrix
+    var i;
+    for(i = 0; i < m.length; i++) {
+        // OS main groups e.g. Microsoft Windows
+        out += '<h2>' + m[i].name + '</h2>' ;
+
+        // OS Version e.g. MS Windows 2003 Server (x86)
+        var v = m[i].versions;
+        for (j=0;j<v.length;j++)
+        {
+          out += '<h3>' + m[i].name + ' ' + v[j].number + ' ' + v[j].version + ' (' + v[j].architecture + ')' + '</h3>' ;
+          var s = v[j].support;
+
+          // Support status
+          out += '<h4>Support status<h4>';
+          out += '<table class=support>';
+          out += '<tr><td>Version</td><td>Status</td></tr>';
+          for(k=0;k<s.length;k++)
+          {
+            out += '<tr><td>' + s[k].version + '</td><td>' + s[k].status + '</td></tr>';
+          }
+          out += '</table>';
+
+          // ISO Images
+          var o = v[j].iso;
+          out += '<h4>ISO Images<h4>';
+          out += '<table class=isoimages>';
+          out += '<tr><td>Filename</td><td>Download</td><td>MD5 sum</td><td>Comment</td></tr>';
+          for(k=0;k<o.length;k++)
+          {
+            out += '<tr>';
+            out += '<td>' + o[k].filename   + '</td>';
+            out += '<td>' + o[k].download   + '</td>';
+            out += '<td>' + o[k].md5        + '</td>';
+            out += '<td>' + o[k].comment    + '</td>';
+            out += '</tr>';
+          }
+          out += '</table>';
+ 
+          // VM Images
+          var f = v[j].images;
+          out += '<h4>VM Images<h4>';
+          out += '<table class=isoimages>';
+          out += '<tr><td>Format</td><td>Filename</td><td>Download</td><td>architecture</td><td>#cpu\'s</td><td>memory</td><td>nics</td><td>disks</td><td>comment</td></tr>';
+          for(k=0;k<f.length;k++)
+          {
+           
+            out += '<tr>';
+            out += '<td>' + f[k].format        + '</td>';
+            out += '<td>' + f[k].filename      + '</td>';
+            out += '<td>' + f[k].download      + '</td>';
+            out += '<td>' + f[k].architecture  + '</td>';
+            out += '<td>' + f[k].cpus          + '</td>';
+            out += '<td>' + f[k].memory        + '</td>';
+
+            // Network Cards
+            out += '<td>';
+            if (f[k].nics)
+            {
+              var n = f[k].nics;
+              for(l=0;l<n.length;l++)
+              {
+                 out += '<li>' + n[l].vendor + ' (' + n[l].driver + ') ' + n[l].comment ;
+              }
+            }
+            out += '</td>';
+
+            // Disks
+            out += '<td>';
+            if (f[k].disks)
+            {
+              var d = f[k].disks;
+              for(l=0;l<d.length;l++)
+              {
+                 out += '<li>' + d[l].controller + ' (' + d[l].size + ' G) ' ;
+              }
+            }
+            out += '</td>';
+
+            // VM image comment
+            out += '<td>'+ f[k].comment + '</td>';
+            out += '</tr>';
+          }
+          out += '</table>';
+        }
+    }
+    document.getElementById("supportmatrix").innerHTML = out;
+} 
+
+var xmlhttp = new XMLHttpRequest();
+var url = "supportmatrix.json";
+
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        myFunction(myArr);
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+  </SCRIPT>
+
+  </BODY>
+
+</HTML>

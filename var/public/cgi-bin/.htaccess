@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "UDA web login"
+AuthUserFile /var/public/conf/passwd
+require user admin

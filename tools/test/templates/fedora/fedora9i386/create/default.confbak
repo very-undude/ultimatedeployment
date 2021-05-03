@@ -1,0 +1,10 @@
+module=templates
+action=new
+step=2
+button=finish
+OS=fedora
+OSFLAVOR=fedora9i386
+MAC=10-0c-29-53-49-24
+PUBLISH=ON
+DESCRIPTION=Fedora XFEDVER i386
+TEMPLATE=fedora9i386

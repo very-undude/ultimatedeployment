@@ -1,0 +1,10 @@
+module=templates
+action=new
+step=2
+button=finish
+OS=fedora16
+OSFLAVOR=fedora22x64
+MAC=10-0c-29-53-49-05
+PUBLISH=ON
+DESCRIPTION=Fedora XFEDVER x64
+TEMPLATE=fedora22x64

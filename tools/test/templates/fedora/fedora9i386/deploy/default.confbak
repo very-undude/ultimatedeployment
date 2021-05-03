@@ -1,0 +1,3 @@
+module=templates
+action=deploy
+template=fedora9i386
