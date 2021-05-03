@@ -6,7 +6,11 @@ https://github.com/very-undude/ultimatedeployment/releases/download/v3.0.97/uda3
 
 * Check out the Youtube channel with how-to videos here:
 
-https://www.youtube.com/channel/UCFMT8nvYgVGw5tQp7GLL3iQ
+https://www.youtube.com/c/UltimateDeployment
+
+* Visit to the ultimate deployment homepage here:
+
+http://ultimatedeployment.org
 
 ## What is the Ultimate Deployment Appliance?
 
