@@ -999,6 +999,20 @@ sub windows7_ImportOS_DoIt
   }
   &UpdateActionProgress($actionid,17,"Reformatted install.wim xml data");
 
+  local($result)=&RunCommand("grep 'MAJOR' $extradir/install.xml | grep '>10<'","Getting Major version");
+  if (!$result)
+  {
+    &UpdateActionProgress($actionid,18,"Found major version 10 this is either windows 10 or windows 2019");
+    local($result)=&RunCommand("grep -i 'EDITION' $extradir/install.xml | grep -i 'server'","Getting edition version");
+    if (!$result)
+    {
+      &UpdateActionProgress($actionid,20,"Found server edition , This is Windows Server 2019");
+    } else {
+      &UpdateActionProgress($actionid,20,"Found non-server edition, This is Windows 10 Desktop");
+      $osinfo{SUBOS}="windows10";
+    }
+  } 
+
   local($result)=&RunCommand("grep 'MAJOR' $extradir/install.xml | grep '>6<'","Getting Major version");
   if (!$result)
   {
