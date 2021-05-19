@@ -2,7 +2,7 @@ system_locale=en_US
 timezone=US/Pacific
 terminal=sun-cmd
 timeserver=localhost
-network_interface=pcn0 {protocol_ipv6=no}
+network_interface=PRIMARY {dhcp protocol_ipv6=no}
 name_service=NONE
 nfs4_domain=example.com
 # The following command hashes the string 'root' 

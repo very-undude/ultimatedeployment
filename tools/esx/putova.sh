@@ -31,3 +31,4 @@ else
 fi
 
 ovftool --overwrite -ds=$UDA_OVA_DATASTORE -dm=thin --net:"VM Network"="$UDA_OVA_VM_NETWORK" -n=$VMNAME $OVANAME vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/
+#ovftool --overwrite -ds=$UDA_OVA_DATASTORE -dm=thin --net:"Install Network"="$UDA_OVA_VM_NETWORK" -n=$VMNAME $OVANAME vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/
