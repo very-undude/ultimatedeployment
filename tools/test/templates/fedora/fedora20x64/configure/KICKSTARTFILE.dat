@@ -5,7 +5,7 @@ url --url=http://[UDA_IPADDR]/[OS]/[FLAVOR]
 lang en_US.UTF-8
 keyboard us
 skipx
-network --device eth0 --bootproto dhcp
+network --bootproto dhcp
 rootpw secret
 firewall --disabled
 selinux --disabled
