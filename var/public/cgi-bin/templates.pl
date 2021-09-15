@@ -875,6 +875,15 @@ sub UnPublishTemplate
         return $result;
       }
     }
+    if ($infokey =~ /PUBLISHEFIDIR[0-9]+/)
+    {
+      local($deletedir)=&FindAndReplace($info{$infokey},%info);
+      local($result)=&RunCommand("rm -rf $deletedir","Deleting $deletedir");
+      if ($result)
+      {
+        return $result;
+      }
+    }
   }
 
   local($result)=&RunCommand($command,"Removing publishdir $info{PUBLISHDIR1}");
@@ -916,7 +925,6 @@ sub PublishTemplate
     local(@indexes)=keys(%subinfo);
     if ($#indexes<0)
     {
-       # print "<LI>Publishsing default subtemplate for $template\n";
        $info{SUBTEMPLATE}="default";
        local($publishfile)=&FindAndReplace($info{PUBLISHFILE1},%info);
        local($result)=open(PFILE,">$publishfile");
@@ -932,7 +940,6 @@ sub PublishTemplate
       {
        if ($sub ne "__HEADER__")
        {
-         # print "<LI>Publishsing subtemplate $sub\n";
          local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
      
          local($publishfile)=&FindAndReplace($subinfo{PUBLISHFILE1},%subinfo);
@@ -955,7 +962,16 @@ sub PublishTemplate
        if ($result) { return $result };
    }
 
+   if (defined(&{$info{OS}."_PublishEFITemplate"}))
+   {
+       local($result)=&{$info{OS}."_PublishEFITemplate"}($template);
+       if ($result) { return $result };
+   }
+
    local($result)=&WriteTemplatePXEMenu($template,%info);
+   if ($result) { return $result };
+
+   local($result)=&WriteTemplateEFIMenu($template,%info);
    if ($result) { return $result };
   }
 
@@ -1299,6 +1315,7 @@ sub DownloadSubTemplates
   print @thefile;
 }
 
+
 sub WriteTemplatePXEMenu
 {
   local($template)=shift;
@@ -1417,5 +1434,114 @@ sub WriteTemplatePXEMenu
   return 0
 }
 
+sub WriteTemplateEFIMenu
+{
+  local($template)=shift;
+  local($passwordenabled)=0;
+  local(%info)=&GetTemplateInfo($template);
+  local(%subs)=&GetAllSubTemplateInfo($template);
+
+  local(%subsort)=&GetSubTemplateSort($template);
+  local(@sublist)=keys(%subs);
+
+  local($templateefifile)=$EFITEMPLATEDIR."/$template/template.ipxe";
+
+  local($macdir)="$EFITEMPLATEDIR/$template/macs";
+  local($result)=&CreateDir($macdir);
+  if ($result) { return 2; }
+
+  local($result)=opendir(NEWDIR,$macdir);
+  while($newfn=readdir(NEWDIR))
+  {
+     if ($newfn =~ /^([0-9]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2})\.ipxe$/)
+     {
+       #print ("<LI>Removing file $macdir/$newfn\n");
+       &RunCommand("rm $macdir/$newfn","Removing Mac template file $macdir/$newfn");
+     }
+     if ($newfn =~ /^\.ipxe$/)
+     {
+       #print ("<LI>QnD Removing $macdir/$newfn\n");
+       &RunCommand("rm $macdir/$newfn","Removing QnD template mac file $macdir/$newfn");
+     }
+  }
+
+  local($headerline)=$subs{__HEADER__};
+  if ($#sublist > 0)
+  {
+   local($result)=open(EFIFILE,">$templateefifile");
+   local(@menuitem)=&GetConfigFile($IPXESUBMENUHEADER);
+   for $itemline (@menuitem)
+   {
+     local($newline)=&FindAndReplace($itemline,%info);
+     print EFIFILE $newline ;
+   }
+
+   for $cursubindex (sort(keys(%subsort)))
+   {
+     $item=$subsort{$cursubindex};
+     if ($item ne "__HEADER__")
+     {
+       local(%subinfo)=&GetSubTemplateInfo($headerline,$subs{$item},%info);
+       print EFIFILE "item $item $item\n"
+     }
+   }
+
+   local(@menuitem)=&GetConfigFile($IPXESUBMENUFOOTER);
+   for $itemline (@menuitem)
+   {
+     local($newline)=&FindAndReplace($itemline,%info);
+     print EFIFILE $newline ;
+   }
+
+   for $cursubindex (sort(keys(%subsort)))
+   {
+     $item=$subsort{$cursubindex};
+     if ($item ne "__HEADER__")
+     {
+       local(%subinfo)=&GetSubTemplateInfo($headerline,$subs{$item},%info);
+       print EFIFILE "\n:$item\n";
+       local($chain)="/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+       local($newchain)=&FindAndReplace($chain,%subinfo);
+       print EFIFILE "chain $newchain\n";
+       print EFIFILE "goto start\n\n";
+
+       if (defined($subinfo{MAC}) && $subinfo{MAC} ne "")
+       {
+         my($newmac)=$subinfo{MAC};
+         $newmac=~s/:/-/g;
+         local($MACFILE)=$macdir."/01-".$newmac.".ipxe" ;
+         local($result)=open(MF,">$MACFILE");
+         print MF "#!ipxe\n";
+         print MF "chain $newchain\n";
+         close(MF);
+       }
+     }
+   }
+
+   close(EFIFILE);
+
+ } else {
+   # print "<LI>NO subtemplates detected writing default file $templateefifile\n";
+   $info{SUBTEMPLATE}="default";
+   local($result)=open(EFIFILE,">$templateefifile");
+   print EFIFILE "#!ipxe\n";
+   local($chain)="/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+   local($newchain)=&FindAndReplace($chain,%info);
+   print EFIFILE "chain $newchain\n";
+   close(EFIFILE);
+
+   if (defined($info{MAC}) && $info{MAC} ne "")
+   {
+      my($newmac)=$info{MAC};
+      $newmac=~s/:/-/g;
+      local($MACFILE)=$macdir."/01-".$newmac.".ipxe" ;
+      local($result)=open(MF,">$MACFILE");
+      print MF "#!ipxe\n";
+      print MF "chain $newchain\n";
+      close(MF);
+   }
+ }
+  return 0
+}
 
 1;

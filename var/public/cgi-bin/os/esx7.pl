@@ -69,6 +69,36 @@ sub esx7_GetDefaultPublishDir2
   return $publishdir;
 }
 
+sub esx7_GetDefaultEFIPublishDir1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]";
+  return $publishdir;
+}
+
+sub esx7_GetDefaultEFIPublishFile1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].cfg";
+  return $publishdir;
+}
+
+sub esx7_GetDefaultEFIPublishFile2
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].ipxe";
+  return $publishdir;
+}
+
+sub esx7_GetDefaultEFIPublishFile3
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+  return $publishdir;
+}
+
+sub esx7_GetDefaultEFIPublishLink1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/files";
+  return $publishdir;
+}
+
 sub esx7_GetDefaultKernel
 {
   local($template)=@_;
@@ -122,7 +152,151 @@ sub esx7_ExtraConfiguration
   local(%info)=();
   $info{PUBLISHDIR2}=&esx7_GetDefaultPublishDir2();
   $info{PUBLISHFILE2}=&esx7_GetDefaultPublishFile2();
+  $info{PUBLISHEFIFILE1}=&esx7_GetDefaultEFIPublishFile1();
+  $info{PUBLISHEFIFILE2}=&esx7_GetDefaultEFIPublishFile2();
+  $info{PUBLISHEFIFILE3}=&esx7_GetDefaultEFIPublishFile3();
+  $info{PUBLISHEFILINK1}=&esx7_GetDefaultEFIPublishLink1();
+  $info{PUBLISHEFIDIR1}=&esx7_GetDefaultEFIPublishDir1();
   return %info;
+}
+
+
+sub esx7_PublishEFITemplate
+{
+  local($template)=shift;
+
+  local(%templateinfo)=&GetTemplateInfo($template);
+  local(%osinfo)=&GetOSInfo($templateinfo{FLAVOR});
+
+  local($templatedir)=&FindAndReplace($templateinfo{PUBLISHEFIDIR1},%templateinfo);
+  local($result)=&CreateDir($templatedir);
+  if ($result) { return 2; }
+
+  local($result)=&CreateDir("$templatedir/subtemplates");
+  if ($result) { return 2; }
+
+  #local($result)=&CreateDir("$templatedir/macs");
+  #if ($result) { return 2; }
+
+  local($efilink)=&FindAndReplace($templateinfo{PUBLISHEFILINK1},%templateinfo);
+  local($command)="rm -f $efilink ; ln -sf $osinfo{MOUNTPOINT_1} $efilink";
+  local($result)=&RunCommand($command,"Makeing link to mounted iso");
+
+
+  local($srcfile)=$osinfo{FILE_2};
+
+  # print "<LI>SRCfile = $srcfile\n";
+
+    local(%subinfo)=&GetAllSubTemplateInfo($template);
+
+
+    local(@indexes)=keys(%subinfo);
+    if ($#indexes<0)
+    {
+       $templateinfo{SUBTEMPLATE}="default";
+
+       local($publishfile)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%templateinfo);
+       local($result)=open(PFILE,">$publishfile");
+       local(@configfile)=&GetConfigFile($srcfile);
+       for $line (@configfile)
+       {
+        if ($line =~ /^title=(.*)/)
+        {
+          $line = "title=Loading UDA template [TEMPLATE] - [SUBTEMPLATE]\n"
+        }
+        if ($line =~ /^kernelopt=(.*)/)
+        {
+          $line = "kernelopt=$1 ks=http://[UDA_IPADDR]/kickstart/[TEMPLATE]/[SUBTEMPLATE].cfg\n";
+        }
+        if ($line =~ /^prefix=(.*)/)
+        {
+          $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
+        }
+        if ($line =~ /^kernel=\/(.*)/)
+        {
+          $line="kernel=$1\n";
+        }
+        if ($line =~ /^modules=\/(.*)/)
+        {
+          $line =~  s|\/||g;
+        }
+        $newline=&FindAndReplace($line,%templateinfo);
+        print PFILE $newline;
+       }
+       close(PFILE);
+
+       local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%templateinfo);
+       local($result)=open(PFILE2,">$publishfile2");
+       print PFILE2 "#!ipxe\n";
+       print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
+       close(PFILE2);
+
+       local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
+       local($result)=open(PFILE3,">$publishfile3");
+       local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+       local($newchain)=&FindAndReplace($chain,%templateinfo);
+       print PFILE3 "#!ipxe\n";
+       print PFILE3 "chain $newchain\n";
+       close(PFILE3);
+
+
+    } else  {
+      local($headerline)=$subinfo{__HEADER__};
+      for $sub (keys(%subinfo))
+      {
+       if ($sub ne "__HEADER__")
+       {
+         local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
+
+         local($publishfile)=&FindAndReplace($subinfo{PUBLISHEFIFILE1},%subinfo);
+
+         # print "<LI>Current publishfile = $publishfile\n";
+         local($result)=open(PFILE,">$publishfile");
+         local(@configfile)=&GetConfigFile($srcfile);
+         for $line (@configfile)
+         {
+           if ($line =~ /^title=(.*)/)
+           {
+             $line = "title=Loading UDA template [TEMPLATE] - [SUBTEMPLATE]\n"
+           }
+           if ($line =~ /^kernelopt=(.*)/)
+           {
+             $line = "kernelopt=$1 ks=http://[UDA_IPADDR]/kickstart/[TEMPLATE]/[SUBTEMPLATE].cfg\n";
+           }
+           if ($line =~ /^prefix=(.*)/)
+           {
+             $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
+           }
+           if ($line =~ /^kernel=\/(.*)/)
+           {
+             $line="kernel=$1\n";
+           }
+           if ($line =~ /^modules=\/(.*)/)
+           {
+             $line =~  s|\/||g;
+           }
+           local($newline)=&FindAndReplace($line,%subinfo);
+           print PFILE $newline;
+
+         }
+         local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%subinfo);
+         local($result)=open(PFILE2,">$publishfile2");
+         print PFILE2 "#!ipxe\n";
+         print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
+         close(PFILE2);
+
+         local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%subinfo);
+         local($result)=open(PFILE3,">$publishfile3");
+         local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+         local($newchain)=&FindAndReplace($chain,%subinfo);
+         print PFILE3 "#!ipxe\n";
+         print PFILE3 "chain $newchain\n";
+         close(PFILE3);
+      }
+    }
+  }
+
+  return 0;
 }
 
 sub esx7_PublishTemplate
@@ -147,7 +321,6 @@ sub esx7_PublishTemplate
     local(@indexes)=keys(%subinfo);
     if ($#indexes<0)
     {
-       # print "<LI>Publishsing default subtemplate for $template\n";
        $templateinfo{SUBTEMPLATE}="default";
        local($publishfile)=&FindAndReplace($templateinfo{PUBLISHFILE2},%templateinfo);
        local($result)=open(PFILE,">$publishfile");
@@ -180,7 +353,6 @@ sub esx7_PublishTemplate
       {
        if ($sub ne "__HEADER__")
        {
-         # print "<LI>Publishsing subtemplate $sub\n";
          local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
 
          local($publishfile)=&FindAndReplace($subinfo{PUBLISHFILE2},%subinfo);

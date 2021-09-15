@@ -6,10 +6,19 @@ option host-name = config-option server.ddns-hostname;
 
 next-server [UDA_IPADDR] ;
 
-if substring ( option vendor-class-identifier, 0, 9) = "PXEClient"
-{
-  filename "pxelinux.0" ;
-  next-server [UDA_IPADDR] ;
+#if substring ( option vendor-class-identifier, 0, 9) = "PXEClient"
+#{
+#  filename "pxelinux.0" ;
+#  next-server [UDA_IPADDR] ;
+#}
+
+option client-architecture code 93 = unsigned integer 16;
+if exists user-class and option user-class = "iPXE" {
+    filename "http://[UDA_IPADDR]/ipxe/default.ipxe";
+} elsif option client-architecture = 00:00 {
+    filename "pxelinux.0";
+} else {
+    filename "ipxe.efi";
 }
 
 # Jumpstart Support

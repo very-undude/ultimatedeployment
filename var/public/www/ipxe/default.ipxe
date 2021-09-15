@@ -1,0 +1,2 @@
+#!ipxe
+chain /ipxe/scripts/menu.cgi?mac=${net0/mac:hexhyp}

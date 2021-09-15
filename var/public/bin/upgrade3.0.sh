@@ -45,6 +45,10 @@ mkdir /var/public/www/kickstart
 mkdir /var/public/www/autoyast
 mkdir /var/public/www/jumpstart
 mkdir /var/public/www/ova
+mkdir /var/public/www/ipxe
+mkdir /var/public/www/ipxe/scripts
+mkdir /var/public/www/ipxe/templates
+mkdir /var/public/www/ipxe/mac
 mkdir /var/public/conf
 mkdir /var/public/conf/os
 mkdir /var/public/conf/templates
