@@ -19,7 +19,7 @@
 
 export MAJORVERSION=3
 export MINORVERSION=0
-export BUILD=144
+export BUILD=146
 export VERSION=${MAJORVERSION}.${MINORVERSION}
 export KERNEL=`uname -r`
 export ARCH=`uname -m`
@@ -161,6 +161,8 @@ cp -p /var/public/conf/pxedefaultmenuitem.new      /var/public/conf/pxedefaultme
 cp -p /var/public/conf/pxedefaultsubmenuheader.new /var/public/conf/pxedefaultsubmenuheader.conf
 cp -p /var/public/conf/pxedefaultsubmenuitem.new   /var/public/conf/pxedefaultsubmenuitem.conf
 cp -p /var/public/conf/general.new                 /var/public/conf/general.conf
+cp -p /var/public/conf/ipxedefaultsubmenuheader.new /var/public/conf/ipxedefaultsubmenuheader.conf
+cp -p /var/public/conf/ipxedefaultsubmenufooter.new /var/public/conf/ipxedefaultsubmenufooter.conf
 
 echo Setting Up temporary directory for file upload
 mv /var/tmp /var/tmp.old

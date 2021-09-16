@@ -1,0 +1,33 @@
+item --gap --             -------------------------  Other options ----------------------------
+item shell                Drop to iPXE shell
+item reboot               Reboot computer
+item --key x exit         Exit iPXE and continue BIOS boot
+choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
+set menu-timeout 0
+goto ${selected}
+
+:cancel
+echo You cancelled the menu, dropping you to a shell
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+goto start
+
+:failed
+echo Booting failed, dropping to shell
+goto shell
+
+:reboot
+reboot
+
+:exit
+exit
+
+:back
+set submenu-timeout 0
+lear submenu-default
+goto start
+

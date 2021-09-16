@@ -114,4 +114,11 @@ sub centos7_ImportOS_DoIt
   return $result;
 }
 
+sub centos7_PublishEFITemplate
+{
+  local($template)=shift;
+  local($result)=&kickstart_PublishEFITemplate($template);
+  return($result);
+}
+
 1;

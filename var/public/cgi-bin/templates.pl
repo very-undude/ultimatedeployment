@@ -1446,6 +1446,14 @@ sub WriteTemplateEFIMenu
 
   local($templateefifile)=$EFITEMPLATEDIR."/$template/template.ipxe";
 
+  local($tpldir)="$EFITEMPLATEDIR/$template";
+  local($result)=&CreateDir($tpldir);
+  if ($result) { return 2; }
+
+  local($stpldir)="$EFITEMPLATEDIR/$template/subtemplates";
+  local($result)=&CreateDir($stpldir);
+  if ($result) { return 2; }
+
   local($macdir)="$EFITEMPLATEDIR/$template/macs";
   local($result)=&CreateDir($macdir);
   if ($result) { return 2; }
