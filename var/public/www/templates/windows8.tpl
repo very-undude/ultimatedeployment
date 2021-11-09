@@ -19,7 +19,7 @@
                     <WillShowUI>OnError</WillShowUI>
                     <InstallTo>
                       <DiskID>0</DiskID>
-                      <PartitionID>1</PartitionID>
+                      <PartitionID>2</PartitionID>
                     </InstallTo>
                     <InstallFrom>
                         <Path>i:\[OS]\[FLAVOR]\sources\install.wim</Path>
@@ -54,7 +54,7 @@
                     <WillShowUI>OnError</WillShowUI>
                     <InstallTo>
                     <DiskID>0</DiskID>
-                    <PartitionID>1</PartitionID>
+                    <PartitionID>2</PartitionID>
                     </InstallTo>
                     <InstallFrom>
                         <Path>i:\[OS]\[FLAVOR]\sources\install.wim</Path>
