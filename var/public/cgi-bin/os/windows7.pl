@@ -142,7 +142,6 @@ sub windows7_CreateTemplate
 {
   local($template)=$formdata{TEMPLATE};
 
-
   local($result)=&CheckTemplateName($template);
   if ($result)
   {
@@ -178,6 +177,15 @@ sub windows7_CreateTemplate
   $config{PUBLISHDIR1}=&windows7_GetDefaultPublishDir($template);
   $config{PUBLISHFILE1}=&windows7_GetDefaultPublishFile($template);
   $config{IMAGEID}=$imageid;
+
+  if(defined(&{$config{OS}."_ExtraConfiguration"}))
+  {
+     local(%extrainfo)=&{$config{OS}."_ExtraConfiguration"}();
+     for $thekey (keys(%extrainfo))
+     {
+       $config{$thekey}=$extrainfo{$thekey};
+     }
+  }
 
   # print "<LI>Copy Template Configuration File\n";
   local($result)=&windows7_CopyTemplateFile1($template,$flavorinfo{SUBOS},$config{CONFIGFILE1});
@@ -298,6 +306,7 @@ sub windows7_PublishTemplate
 
     local(%udaconfig)=GetSystemVariables();
     local($filename)="bcd";
+    #print("<H1>drivers = $info{WINPEDRIVER}</H1>\n");
     local($command)="$BINDIR/bcdedit.pl $subtemplatedir/bcd /windows7/$info{FLAVOR}_extra/winpe.wim /windows7/$info{FLAVOR}_extra/boot.sdi UDA=$udaconfig{UDA_IPADDR}:$template:$info{SUBTEMPLATE}:$info{WINPEDRIVER}";
     local($result)=&RunCommand($command,"Updating BCD file");
     if ($result) { &PrintError("Could not update BCD file"); return 2 } 
@@ -1510,6 +1519,202 @@ sub windows7_ApplyConfigureTemplate
   unlink($tmpfile);
 
    
+
+  return 0;
+}
+
+
+sub windows7_GetDefaultEFIPublishDir1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishFile1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].cmd";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishFile2
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].ipxe";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishFile3
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishFile4
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE]/uda.opt";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishLink1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/files";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishLink2
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].bcd";
+  return $publishdir;
+}
+
+sub windows7_GetDefaultEFIPublishLink3
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/boot.wim";
+  return $publishdir;
+}
+
+sub windows7_ExtraConfiguration
+{
+  local(%info)=();
+  $info{PUBLISHEFIFILE1}=&windows7_GetDefaultEFIPublishFile1();
+  $info{PUBLISHEFIFILE2}=&windows7_GetDefaultEFIPublishFile2();
+  $info{PUBLISHEFIFILE3}=&windows7_GetDefaultEFIPublishFile3();
+  $info{PUBLISHEFIFILE4}=&windows7_GetDefaultEFIPublishFile4();
+  $info{PUBLISHEFILINK1}=&windows7_GetDefaultEFIPublishLink1();
+  $info{PUBLISHEFILINK2}=&windows7_GetDefaultEFIPublishLink2();
+  $info{PUBLISHEFILINK3}=&windows7_GetDefaultEFIPublishLink3();
+  $info{PUBLISHEFIDIR1}=&windows7_GetDefaultEFIPublishDir1();
+  return %info;
+}
+
+sub windows7_PublishEFITemplate
+{
+  local($template)=shift;
+
+  local(%templateinfo)=&GetTemplateInfo($template);
+  local(%osinfo)=&GetOSInfo($templateinfo{FLAVOR});
+
+  local($templatedir)=&FindAndReplace($templateinfo{PUBLISHEFIDIR1},%templateinfo);
+  local($result)=&CreateDir($templatedir);
+  if ($result) { return 2; }
+
+  local($result)=&CreateDir("$templatedir/subtemplates");
+  if ($result) { return 2; }
+
+  #local($result)=&CreateDir("$templatedir/macs");
+  #if ($result) { return 2; }
+
+  # link OS image
+  local($efilink)=&FindAndReplace($templateinfo{PUBLISHEFILINK1},%templateinfo);
+  local($command)="rm -f $efilink ; ln -sf $osinfo{MOUNTPOINT_1} $efilink";
+  local($result)=&RunCommand($command,"Makeing link to mounted iso");
+
+  local($wimfile)=$osinfo{DIR_1}."/winpe.wim";
+
+  local(%subinfo)=&GetAllSubTemplateInfo($template);
+
+  local(%udaconfig)=GetSystemVariables();
+  local(@indexes)=keys(%subinfo);
+
+  if ($#indexes<0)
+  {
+       $templateinfo{SUBTEMPLATE}="default";
+
+       local($subtemplatedir)="$TFTPDIR/pxelinux.cfg/templates/$template/$templateinfo{SUBTEMPLATE}";
+       local($efilink)=&FindAndReplace($templateinfo{PUBLISHEFILINK2},%templateinfo);
+       local($command)="rm -f $efilink ; ln -sf $subtemplatedir/bcd $efilink";
+       local($result)=&RunCommand($command,"Makeing link to bcd file");
+
+       local($efilink)=&FindAndReplace($templateinfo{PUBLISHEFILINK3},%templateinfo);
+       local($command)="rm -f $efilink ; ln -sf $wimfile $efilink";
+       local($result)=&RunCommand($command,"Makeing link to wim file");
+
+       local($result)=&CreateDir("$templatedir/subtemplates/$templateinfo{SUBTEMPLATE}");
+       if ($result) { return 2; }
+
+       local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%templateinfo);
+       local($result)=open(PFILE2,">$publishfile2");
+       print PFILE2 "#!ipxe\n";
+       print PFILE2 "kernel /ipxe/wimboot\n";
+       print PFILE2 "initrd /ipxe/templates/$template/subtemplates/$templateinfo{SUBTEMPLATE}.bcd BCD\n";
+       print PFILE2 "initrd /ipxe/templates/$template/files/boot/boot.sdi boot.sdi\n";
+       print PFILE2 "initrd /ipxe/templates/$template/subtemplates/$templateinfo{SUBTEMPLATE}/uda.opt uda.opt\n";
+       print PFILE2 "initrd /ipxe/templates/$template/boot.wim boot.wim\n";
+       print PFILE2 "imgstat\n";
+       #print PFILE2 "prompt\n";
+       print PFILE2 "boot\n";
+       close(PFILE2);
+
+       local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
+       local($result)=open(PFILE3,">$publishfile3");
+       local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+       local($newchain)=&FindAndReplace($chain,%templateinfo);
+       print PFILE3 "#!ipxe\n";
+       print PFILE3 "chain $newchain\n";
+       close(PFILE3);
+
+       local($publishfile4)=&FindAndReplace($templateinfo{PUBLISHEFIFILE4},%templateinfo);
+       local($result)=open(PFILE4,">$publishfile4");
+       local($newchain)=&FindAndReplace($chain,%templateinfo);
+       print PFILE4 "UDA_IPADDR=$udaconfig{UDA_IPADDR}\n";
+       print PFILE4 "UDA_TEMPLATE=$template\n";
+       print PFILE4 "UDA_SUBTEMPLATE=$templateinfo{SUBTEMPLATE}\n";
+       print PFILE4 "UDA_DRIVER=$osinfo{SORTEDDRIVERS}\n";
+       close(PFILE4);
+
+  } else {
+
+      local($headerline)=$subinfo{__HEADER__};
+      for $sub (keys(%subinfo))
+      {
+       if ($sub ne "__HEADER__")
+       {
+         local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
+
+         local($subtemplatedir)="$TFTPDIR/pxelinux.cfg/templates/$template/$subinfo{SUBTEMPLATE}";
+         local($efilink)=&FindAndReplace($subinfo{PUBLISHEFILINK2},%subinfo);
+         local($command)="rm -f $efilink ; ln -sf $subtemplatedir/bcd $efilink";
+         local($result)=&RunCommand($command,"Makeing link to bcd file");
+
+         local($efilink)=&FindAndReplace($subinfo{PUBLISHEFILINK3},%subinfo);
+         local($command)="rm -f $efilink ; ln -sf $wimfile $efilink";
+         local($result)=&RunCommand($command,"Makeing link to wim file");
+
+         local($result)=&CreateDir("$templatedir/subtemplates/$subinfo{SUBTEMPLATE}");
+         if ($result) { return 2; }
+
+         local($publishfile2)=&FindAndReplace($subinfo{PUBLISHEFIFILE2},%subinfo);
+         local($result)=open(PFILE2,">$publishfile2");
+         print PFILE2 "#!ipxe\n";
+         print PFILE2 "kernel /ipxe/wimboot\n";
+         print PFILE2 "initrd /ipxe/templates/$template/subtemplates/$subinfo{SUBTEMPLATE}.bcd BCD\n";
+         print PFILE2 "initrd /ipxe/templates/$template/files/boot/boot.sdi boot.sdi\n";
+         print PFILE2 "initrd /ipxe/templates/$template/subtemplates/$subinfo{SUBTEMPLATE}/uda.opt uda.opt\n";
+         print PFILE2 "initrd /ipxe/templates/$template/boot.wim boot.wim\n";
+         print PFILE2 "imgstat\n";
+         #print PFILE2 "prompt\n";
+         print PFILE2 "boot\n";
+         close(PFILE2);
+
+         local($publishfile3)=&FindAndReplace($subinfo{PUBLISHEFIFILE3},%subinfo);
+         local($result)=open(PFILE3,">$publishfile3");
+         local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+         local($newchain)=&FindAndReplace($chain,%subinfo);
+         print PFILE3 "#!ipxe\n";
+         print PFILE3 "chain $newchain\n";
+         close(PFILE3);
+
+         local($publishfile4)=&FindAndReplace($subinfo{PUBLISHEFIFILE4},%subinfo);
+         local($result)=open(PFILE4,">$publishfile4");
+         local($newchain)=&FindAndReplace($chain,%subinfo);
+         print PFILE4 "UDA_IPADDR=$udaconfig{UDA_IPADDR}\n";
+         print PFILE4 "UDA_TEMPLATE=$template\n";
+         print PFILE4 "UDA_SUBTEMPLATE=$subinfo{SUBTEMPLATE}\n";
+         print PFILE4 "UDA_DRIVER=$osinfo{SORTEDDRIVERS}\n";
+         close(PFILE4);
+
+      }
+    }
+  }
 
   return 0;
 }

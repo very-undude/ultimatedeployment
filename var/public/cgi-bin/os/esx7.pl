@@ -69,13 +69,7 @@ sub esx7_GetDefaultPublishDir2
   return $publishdir;
 }
 
-sub esx7_GetDefaultEFIPublishDir1
-{
-  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]";
-  return $publishdir;
-}
-
-sub esx7_GetDefaultEFIPublishFile1
+sub esx7_GetDefaultEFIPublishFile3
 {
   local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].cfg";
   return $publishdir;
@@ -84,12 +78,6 @@ sub esx7_GetDefaultEFIPublishFile1
 sub esx7_GetDefaultEFIPublishFile2
 {
   local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].ipxe";
-  return $publishdir;
-}
-
-sub esx7_GetDefaultEFIPublishFile3
-{
-  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
   return $publishdir;
 }
 
@@ -152,11 +140,9 @@ sub esx7_ExtraConfiguration
   local(%info)=();
   $info{PUBLISHDIR2}=&esx7_GetDefaultPublishDir2();
   $info{PUBLISHFILE2}=&esx7_GetDefaultPublishFile2();
-  $info{PUBLISHEFIFILE1}=&esx7_GetDefaultEFIPublishFile1();
   $info{PUBLISHEFIFILE2}=&esx7_GetDefaultEFIPublishFile2();
   $info{PUBLISHEFIFILE3}=&esx7_GetDefaultEFIPublishFile3();
   $info{PUBLISHEFILINK1}=&esx7_GetDefaultEFIPublishLink1();
-  $info{PUBLISHEFIDIR1}=&esx7_GetDefaultEFIPublishDir1();
   return %info;
 }
 
@@ -182,7 +168,6 @@ sub esx7_PublishEFITemplate
   local($command)="rm -f $efilink ; ln -sf $osinfo{MOUNTPOINT_1} $efilink";
   local($result)=&RunCommand($command,"Makeing link to mounted iso");
 
-
   local($srcfile)=$osinfo{FILE_2};
 
   # print "<LI>SRCfile = $srcfile\n";
@@ -195,8 +180,22 @@ sub esx7_PublishEFITemplate
     {
        $templateinfo{SUBTEMPLATE}="default";
 
-       local($publishfile)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%templateinfo);
-       local($result)=open(PFILE,">$publishfile");
+       local($publishfile1)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%templateinfo);
+       local($result)=open(PFILE1,">$publishfile1");
+       local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+       local($newchain)=&FindAndReplace($chain,%templateinfo);
+       print PFILE1 "#!ipxe\n";
+       print PFILE1 "chain $newchain\n";
+       close(PFILE1);
+
+       local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%templateinfo);
+       local($result)=open(PFILE2,">$publishfile2");
+       print PFILE2 "#!ipxe\n";
+       print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
+       close(PFILE2);
+
+       local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
+       local($result)=open(PFILE3,">$publishfile3");
        local(@configfile)=&GetConfigFile($srcfile);
        for $line (@configfile)
        {
@@ -207,6 +206,7 @@ sub esx7_PublishEFITemplate
         if ($line =~ /^kernelopt=(.*)/)
         {
           $line = "kernelopt=$1 ks=http://[UDA_IPADDR]/kickstart/[TEMPLATE]/[SUBTEMPLATE].cfg\n";
+          $line =~ s/cdromboot//i;
         }
         if ($line =~ /^prefix=(.*)/)
         {
@@ -221,24 +221,9 @@ sub esx7_PublishEFITemplate
           $line =~  s|\/||g;
         }
         $newline=&FindAndReplace($line,%templateinfo);
-        print PFILE $newline;
+        print PFILE3 $newline;
        }
-       close(PFILE);
-
-       local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%templateinfo);
-       local($result)=open(PFILE2,">$publishfile2");
-       print PFILE2 "#!ipxe\n";
-       print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
-       close(PFILE2);
-
-       local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
-       local($result)=open(PFILE3,">$publishfile3");
-       local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
-       local($newchain)=&FindAndReplace($chain,%templateinfo);
-       print PFILE3 "#!ipxe\n";
-       print PFILE3 "chain $newchain\n";
        close(PFILE3);
-
 
     } else  {
       local($headerline)=$subinfo{__HEADER__};
@@ -248,10 +233,23 @@ sub esx7_PublishEFITemplate
        {
          local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
 
-         local($publishfile)=&FindAndReplace($subinfo{PUBLISHEFIFILE1},%subinfo);
+         local($publishfile1)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%subinfo);
+         local($result)=open(PFILE1,">$publishfile1");
+         local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
+         local($newchain)=&FindAndReplace($chain,%subinfo);
+         print PFILE1 "#!ipxe\n";
+         print PFILE1 "chain $newchain\n";
+         close(PFILE1);
 
-         # print "<LI>Current publishfile = $publishfile\n";
-         local($result)=open(PFILE,">$publishfile");
+         local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%subinfo);
+         local($result)=open(PFILE2,">$publishfile2");
+         print PFILE2 "#!ipxe\n";
+         print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
+         close(PFILE2);
+
+         local($publishfile3)=&FindAndReplace($subinfo{PUBLISHEFIFILE3},%subinfo);
+         # print "<LI>Current publishfile = $publishfile3\n";
+         local($result)=open(PFILE3,">$publishfile3");
          local(@configfile)=&GetConfigFile($srcfile);
          for $line (@configfile)
          {
@@ -262,6 +260,7 @@ sub esx7_PublishEFITemplate
            if ($line =~ /^kernelopt=(.*)/)
            {
              $line = "kernelopt=$1 ks=http://[UDA_IPADDR]/kickstart/[TEMPLATE]/[SUBTEMPLATE].cfg\n";
+             $line =~ s/cdromboot//i;
            }
            if ($line =~ /^prefix=(.*)/)
            {
@@ -276,22 +275,8 @@ sub esx7_PublishEFITemplate
              $line =~  s|\/||g;
            }
            local($newline)=&FindAndReplace($line,%subinfo);
-           print PFILE $newline;
-
+           print PFILE3 $newline;
          }
-         local($publishfile2)=&FindAndReplace($templateinfo{PUBLISHEFIFILE2},%subinfo);
-         local($result)=open(PFILE2,">$publishfile2");
-         print PFILE2 "#!ipxe\n";
-         print PFILE2 "chain /ipxe/templates/$template/files/efi/boot/bootx64.efi\n";
-         close(PFILE2);
-
-         local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%subinfo);
-         local($result)=open(PFILE3,">$publishfile3");
-         local($chain)="/ipxe/scripts/storemac.cgi?mac=\$\{net0/mac:hexhyp\}&template=[TEMPLATE]&subtemplate=[SUBTEMPLATE]";
-         local($newchain)=&FindAndReplace($chain,%subinfo);
-         print PFILE3 "#!ipxe\n";
-         print PFILE3 "chain $newchain\n";
-         close(PFILE3);
       }
     }
   }
