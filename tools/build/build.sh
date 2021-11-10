@@ -12,11 +12,12 @@ do
   export $key="$value"
 done < $BUILDDIR/settings.conf
 
-VMNAME=uda30
-VMXDIR=/vmfs/volumes/datastore01/uda30
-VMXFILE=$VMXDIR/uda30.vmx
-VMDKFILE=$VMXDIR/uda30.vmdk
-VM_STATIC_MAC=10:0c:29:53:41:c7
+VMNAME=$UDA_VM_NAME
+VM_STATIC_MAC=$UDA_MAC
+
+VMXDIR=/vmfs/volumes/$UDA_OVA_DATASTORE/$VMNAME
+VMXFILE=$VMXDIR/$VMNAME.vmx
+VMDKFILE=$VMXDIR/VMNAME.vmdk
 
 function step1()
 {
@@ -50,7 +51,7 @@ function step1()
 function step2()
 {
   echo Step 2 Building package
-  PACKAGE=$TMPDIR/uda30.tgz
+  PACKAGE=$TMPDIR/$VMNAME.tgz
   echo "  DEBUG: PACKAGE=$PACKAGE"
   echo "  INFO: Removing current zip packages with ova templates"
   WWWDIR=$BASEDIR/var/public/www
@@ -120,7 +121,7 @@ function step3()
   fi
   
   echo "  INFO:  Deploying new empty ova file"
-  ovftool -ds=$UDA_OVA_DATASTORE -dm=thin --net:"Testlab1Portgroup1"="$UDA_OVA_VM_NETWORK" -n=uda30 $BUILDDIR/uda30.ova vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/ >$TMPDIR/deploy_$VMNAME.out 2>$TMPDIR/deploy_$VMNAME.err
+  ovftool --noSSLVerify -ds=$UDA_OVA_DATASTORE -dm=thin --net:"Testlab1Portgroup1"="$UDA_OVA_VM_NETWORK" -n=$VMNAME $BUILDDIR/$VMNAME.ova vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/ >$TMPDIR/deploy_$VMNAME.out 2>$TMPDIR/deploy_$VMNAME.err
   
   NEWVMID=`ssh esx "vim-cmd vmsvc/getallvms" |grep -E "^[0-9]+\s+$VMNAME\s+" | awk '{print $1}'`
   if [ "$NEWVMID" == "" ]
@@ -209,7 +210,8 @@ step5()
 
   echo Step 5 Start VM and wait for firstboot script to turn the VM off again
 
-  ssh esx "sed -i -E -e 's/^ethernet0.address = \\\"[^\\\"]+\\\"/ethernet0.generatedAddress = \\\"00:0c:29:53:41:c7\\\"/g' $VMXFILE"
+  #ssh esx "sed -i -E -e 's/^ethernet0.address = \\\"[^\\\"]+\\\"/ethernet0.generatedAddress = \\\"00:0c:29:53:41:c7\\\"/g' $VMXFILE"
+  ssh esx "sed -i -E -e \"s/^ethernet0.address = \\\"[^\\\"]+\\\"/ethernet0.generatedAddress = \\\"$VM_STATIC_MAC\\\"/g\" $VMXFILE"
   ssh esx "sed -i -E -e 's/^ethernet0.addressType = \\\"[^\\\"]+\\\"/ethernet0.addressType = \\\"generated\\\"/g' $VMXFILE"
   ssh esx "vim-cmd solo/registervm $VMXFILE" >$TMPDIR/register_after_post_script.out 2>$TMPDIR/register_after_post_script.err
 
@@ -288,17 +290,51 @@ function step6()
   echo "  INFO:  Punching holes"
   ssh esx vmkfstools -K $VMDKFILE >$TMPDIR/punching_holes.out 2>$TMPDIR/punching_holes.err
 
-  BUILDFILE=$TMPDIR/uda30build${NEWBUILD}.ova
+  BUILDFILE=$TMPDIR/${VMNAME}build${NEWBUILD}.ova
 
   echo "  INFO:  Exporting OVA file "
-  ovftool --net:"Install Network"="VM Network" --targetType=OVA vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/uda30 $BUILDFILE
+  ovftool --noSSLVerify --net:"Install Network"="VM Network" --targetType=OVA vi://$UDA_OVA_VI_USERNAME:$UDA_OVA_VI_PASSWORD@$UDA_OVA_VI_IP/$VMNAME $BUILDFILE >$TMPDIR/export_ova.out 2>$TMPDIR/export_ova.err
   
 }
 
 function step7()
 {
+  echo Step 7 Build autoconfig ISO file
+  AUTOCONFIGFILE=$TMPDIR/setupuda.txt
+  echo "  INFO: Creating autoconfig file $AUTOCONFIGFILE"
+  echo > $AUTOCONFIGFILE
+  echo AUTOCONFIG=ON >> $AUTOCONFIGFILE
+  echo IP=$UDA_IP >> $AUTOCONFIGFILE
+  echo NETMASK=$UDA_NETMASK >> $AUTOCONFIGFILE
+  echo GATEWAY=$UDA_GATEWAY >> $AUTOCONFIGFILE
+  echo HOSTNAME=$UDA_HOSTNAME >> $AUTOCONFIGFILE
+  echo PASSWORD=$UDA_PASSWORD >> $AUTOCONFIGFILE
+  echo DHCP=ON >> $AUTOCONFIGFILE
+  echo NFS=ON >> $AUTOCONFIGFILE
+  echo TFTP=ON >> $AUTOCONFIGFILE
+  echo HTTP=ON >> $AUTOCONFIGFILE
+  echo SAMBA=ON >> $AUTOCONFIGFILE
+  echo SSH=ON >> $AUTOCONFIGFILE
+  echo BINL=ON >> $AUTOCONFIGFILE
+  echo DHCPSUBNET=$UDA_DHCP_SUBNET >> $AUTOCONFIGFILE
+  echo DHCPNETMASK=$UDA_DHCP_NETMASK >> $AUTOCONFIGFILE
+  echo DHCPRANGESTART=$UDA_DHCP_RANGE_START >> $AUTOCONFIGFILE
+  echo DHCPRANGEEND=$UDA_DHCP_RANGE_END >> $AUTOCONFIGFILE
+  
+  echo "  INFO: Creating ISO file"
+  AUTOCONFIGDIR=/tmp/autoconfig.$$
+  ssh uda mkdir $AUTOCONFIGDIR > $TMPDIR/make_iso_dir.out 2>$TMPDIR/make_iso_dir.err
+  scp $AUTOCONFIGFILE uda:$AUTOCONFIGDIR > $TMPDIR/upload_config.out 2>$TMPDIR/upload_config.err
+  ssh uda "cd $AUTOCONFIGDIR;mkisofs  -o /tmp/udasetup.iso -V udasetup -r ." > $TMPDIR/mkisfofs.out 2>$TMPDIR/mkisfofs.err
+  scp uda:/tmp/udasetup.iso $TMPDIR/udaesx.iso > $TMPDIR/download_iso.out 2>$TMPDIR/download_iso.err
+  scp $TMPDIR/udaesx.iso esx:$VMXDIR/udaesx.iso > $TMPDIR/upload_iso.txt 2>$TMPDIR/upload_iso.err
 
-  echo Step 7 Reconfigure the VM network for autoconfig and start
+}
+
+function step8()
+{
+
+  echo Step 8 Reconfigure the VM network for autoconfig and start
 
   echo "  INFO:  Finding the VMID of the vm to build"
   VMID=`ssh esx "vim-cmd vmsvc/getallvms" |grep -E "^[0-9]+\s+$VMNAME\s+" | awk '{print $1}'`
@@ -314,7 +350,7 @@ function step7()
 
   ssh esx "sed -i -E -e 's/ethernet0.networkName\ =\ \"VM Network\"/ethernet0.networkName\ =\ \"Install Network\"/g' $VMXFILE"
   ssh esx "echo 'ide0:0.deviceType = \"cdrom-image\"' >> $VMXFILE"
-  ssh esx "echo 'ide0:0.fileName = \"/vmfs/volumes/datastore01/udaesx.iso\"' >> $VMXFILE"
+  ssh esx "echo 'ide0:0.fileName = \"$VMXDIR/udaesx.iso\"' >> $VMXFILE"
   ssh esx "echo 'ide0:0.present = \"TRUE\"' >> $VMXFILE"
   ssh esx "vim-cmd solo/registervm $VMXFILE" >$TMPDIR/register_vm_for_autosetup.out 2>$TMPDIR/register_vm_for_autosetup.err
 
@@ -339,5 +375,7 @@ step4
 step5
 step6
 step7
+step8
+
 echo Created build $NEWBUILD succesfully: $BUILDFILE
 exit 0

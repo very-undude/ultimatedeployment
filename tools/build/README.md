@@ -2,6 +2,21 @@
 
 This directory contains the tools to make an OVA build from scratch
 
+
+# Setup the build environment
+
+* ssh uda
+  Make sure you can type the command 'ssh uda' and that it logs in to the 
+  uda that is hosting the setup of your new build. This should be configured
+  for use with public key authentication.
+
+* ssh esx
+  Make sure you can type the command 'ssh esx' and that it logs in to the
+  esx server that will host new uda build. This should be configured 
+  for use with public key authentication
+
+# The files in this directory:
+
 ## build.sh
 Automated script that does the entire build. This is wor in progress.
 Currently it requires another UDA to be present that it can SSH to
