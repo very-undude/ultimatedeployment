@@ -1017,8 +1017,16 @@ sub windows7_ImportOS_DoIt
     {
       &UpdateActionProgress($actionid,20,"Found server edition , This is Windows Server 2019");
     } else {
-      &UpdateActionProgress($actionid,20,"Found non-server edition, This is Windows 10 Desktop");
-      $osinfo{SUBOS}="windows10";
+      &UpdateActionProgress($actionid,20,"Found non-server edition, This is Windows 10 or 11 Desktop");
+      local($result)=&RunCommand("grep -i 'DISPLAYNAME' $extradir/install.xml | grep -i 'Windows 11'","Getting display version");
+      if (!$result) 
+      {
+        &UpdateActionProgress($actionid,21,"Found Windows 11 Desktop");
+        $osinfo{SUBOS}="windows11";
+      } else {
+        &UpdateActionProgress($actionid,21,"Found Windows 10 Desktop");
+        $osinfo{SUBOS}="windows10";
+      }
     }
   } 
 
