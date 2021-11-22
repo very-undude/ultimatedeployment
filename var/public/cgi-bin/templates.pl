@@ -763,8 +763,8 @@ sub ApplyEditTemplate
  local($ovasource)=$formdata{NEWOVASOURCE};
  local($ovadestination)=$formdata{NEWOVADESTINATION};
  local($ovaconfig)=$formdata{NEWOVACONFIG};
- local($ovamount)=$formdata{MOUNT};
- local($ovafile)=$formdata{FILE1};
+ local($ovamount)=$formdata{NEWOVAMOUNT};
+ local($ovafile)=$formdata{NEWOVAFILE};
 
  #print "<H1>$ovafile</H1>\n" ;
 
@@ -1076,9 +1076,8 @@ sub ConfigureTemplate
   print "<INPUT TYPE=HIDDEN NAME=OS VALUE=$info{OS}>\n";
   print "<INPUT TYPE=HIDDEN NAME=FLAVOR VALUE=$info{FLAVOR}>\n";
   print "<INPUT TYPE=HIDDEN NAME=OVASOURCE VALUE=$info{OVASOURCE}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVASOURCE VALUE=$info{OVASOURCE}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVAMOUNT VALUE=$info{OVAMOUNT}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVAFILE VALUE=$info{OVAFILE}>\n";
+  print "<INPUT TYPE=HIDDEN NAME=OVAMOUNT VALUE=$info{OVAMOUNT}>\n";
+  print "<INPUT TYPE=HIDDEN NAME=OVAFILE VALUE=$info{OVAFILE}>\n";
   print "<TABLE>\n";
   print "<TR><TD>Template Name</TD><TD><INPUT TYPE=TEXT NAME=NEWTEMPLATE VALUE=\"$template\">\n";
   print "<TR><TD>Description</TD><TD><INPUT TYPE=TEXT NAME=NEWDESCRIPTION VALUE=\"$info{DESCRIPTION}\"></TD>
@@ -1139,11 +1138,11 @@ sub ConfigureTemplate
     local(@mountlist)=&GetMountList();;
     &PrintJavascriptArray("mountsarray",@mountlist);
     print "<script language='javascript' src='/js/loadvalues.js'></script>\n";
-    print "<script language='javascript' src='/js/tree.js'></script>\n";
+    print "<script language='javascript' src='/js/treeova.js'></script>\n";
     print "<TABLE>\n";
     #print "<TR><TD>Source</TD><TD><SELECT NAME=NEWOVASOURCE ID=NEWOVASOURCE></SELECT></TD></TR>\n";
-    print "<TR><TD VALIGN=TOP>Source</TD><TD><TABLE><TR><TD>Storage</TD><TD><SELECT NAME=MOUNT ID=MOUNT ONCHANGE=\"expand('/')\"></SELECT></TD></TR>\n";
-    print "<TR><TD>ImageFile</TD><TD><INPUT TYPE=TEXT NAME=FILE1 ID=FILE1 SIZE=60 VALUE=\"$info{OVAFILE}\"></TD></TR>\n";
+    print "<TR><TD VALIGN=TOP>Source</TD><TD><TABLE><TR><TD>Storage</TD><TD><SELECT NAME=NEWOVAMOUNT ID=NEWOVAMOUNT ONCHANGE=\"expandova('/')\"></SELECT></TD></TR>\n";
+    print "<TR><TD>ImageFile</TD><TD><INPUT TYPE=TEXT NAME=NEWOVAFILE ID=NEWOVAFILE SIZE=60 VALUE=\"$info{OVAFILE}\"></TD></TR>\n";
     print "<TR><TD COLSPAN=2><DIV ID=browse_div></DIV></TD></TR></TR></TABLE>\n";
     print "<TR><TD>Destination</TD><TD><INPUT TYPE=TEXT SIZE=50 ID=NEWOVADESTINATION NAME=NEWOVADESTINATION VALUE=\"$info{OVADESTINATION}\"></TD></TR>\n";
        
@@ -1166,13 +1165,13 @@ sub ConfigureTemplate
     print "</TD></TR></TABLE>";
 
     print "<script language='javascript'>\n";
-    print "LoadValues(\"MOUNT\",mountsarray);\n";
+    print "LoadValues(\"NEWOVAMOUNT\",mountsarray);\n";
     print "</script>\n";
 
     print "<script language=javascript>PreSelect(\"NEWOVAMOUNT\",\"$info{OVAMOUNT}\");</script>\n";
-    print "<script language=javascript>Update(\"$info{OVAMOUNT}\",\"$info{OVAFILE}\");</script>\n";
-    #print "<script language=javascript>expand(\"\");</script>\n";
+    print "<script language=javascript>UpdateOva(\"$info{OVAMOUNT}\",\"$info{OVAFILE}\");</script>\n";
 
+    #print "<script language=javascript>expandova(\"\");</script>\n";
     #print "<script language='javascript'>LoadValues(\"NEWOVASOURCE\",ovaarray);</script>\n";
   #} else {
   #  print "</DIV>\n";

@@ -196,6 +196,7 @@ sub esx6_PublishEFITemplate
        local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
        local($result)=open(PFILE3,">$publishfile3");
        local(@configfile)=&GetConfigFile($srcfile);
+       local($prefixfound)=0;
        for $line (@configfile)
        {
         if ($line =~ /^title=(.*)/)
@@ -209,6 +210,7 @@ sub esx6_PublishEFITemplate
         }
         if ($line =~ /^prefix=(.*)/)
         {
+          $prefixfound=1;
           $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
         }
         if ($line =~ /^kernel=\/(.*)/)
@@ -221,6 +223,12 @@ sub esx6_PublishEFITemplate
         }
         $newline=&FindAndReplace($line,%templateinfo);
         print PFILE3 $newline;
+       }
+       if ($prefixfound == 0)
+       {
+         $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
+         $newline=&FindAndReplace($line,%templateinfo);
+         print PFILE3 $newline;
        }
        close(PFILE3);
 
@@ -250,6 +258,7 @@ sub esx6_PublishEFITemplate
          # print "<LI>Current publishfile = $publishfile3\n";
          local($result)=open(PFILE3,">$publishfile3");
          local(@configfile)=&GetConfigFile($srcfile);
+         local($prefixfound)=0;
          for $line (@configfile)
          {
            if ($line =~ /^title=(.*)/)
@@ -263,6 +272,7 @@ sub esx6_PublishEFITemplate
            }
            if ($line =~ /^prefix=(.*)/)
            {
+             $prefixfound=1;
              $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
            }
            if ($line =~ /^kernel=\/(.*)/)
@@ -273,6 +283,12 @@ sub esx6_PublishEFITemplate
            {
              $line =~  s|\/||g;
            }
+           local($newline)=&FindAndReplace($line,%subinfo);
+           print PFILE3 $newline;
+         }
+         if ($prefixfound == 0)
+         {
+           $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
            local($newline)=&FindAndReplace($line,%subinfo);
            print PFILE3 $newline;
          }

@@ -146,7 +146,6 @@ sub esx7_ExtraConfiguration
   return %info;
 }
 
-
 sub esx7_PublishEFITemplate
 {
   local($template)=shift;
@@ -197,6 +196,7 @@ sub esx7_PublishEFITemplate
        local($publishfile3)=&FindAndReplace($templateinfo{PUBLISHEFIFILE3},%templateinfo);
        local($result)=open(PFILE3,">$publishfile3");
        local(@configfile)=&GetConfigFile($srcfile);
+       local($prefixfound)=0;
        for $line (@configfile)
        {
         if ($line =~ /^title=(.*)/)
@@ -210,6 +210,7 @@ sub esx7_PublishEFITemplate
         }
         if ($line =~ /^prefix=(.*)/)
         {
+          $prefixfound=1;
           $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
         }
         if ($line =~ /^kernel=\/(.*)/)
@@ -222,6 +223,12 @@ sub esx7_PublishEFITemplate
         }
         $newline=&FindAndReplace($line,%templateinfo);
         print PFILE3 $newline;
+       }
+       if ($prefixfound == 0)
+       {
+         $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
+         $newline=&FindAndReplace($line,%templateinfo);
+         print PFILE3 $newline;
        }
        close(PFILE3);
 
@@ -251,6 +258,7 @@ sub esx7_PublishEFITemplate
          # print "<LI>Current publishfile = $publishfile3\n";
          local($result)=open(PFILE3,">$publishfile3");
          local(@configfile)=&GetConfigFile($srcfile);
+         local($prefixfound)=0;
          for $line (@configfile)
          {
            if ($line =~ /^title=(.*)/)
@@ -264,6 +272,7 @@ sub esx7_PublishEFITemplate
            }
            if ($line =~ /^prefix=(.*)/)
            {
+             $prefixfound=1;
              $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
            }
            if ($line =~ /^kernel=\/(.*)/)
@@ -277,12 +286,19 @@ sub esx7_PublishEFITemplate
            local($newline)=&FindAndReplace($line,%subinfo);
            print PFILE3 $newline;
          }
+         if ($prefixfound == 0)
+         {
+           $line="prefix=/ipxe/templates/[TEMPLATE]/files\n";
+           local($newline)=&FindAndReplace($line,%subinfo);
+           print PFILE3 $newline;
+         }
       }
     }
   }
 
   return 0;
 }
+
 
 sub esx7_PublishTemplate
 {
@@ -306,6 +322,7 @@ sub esx7_PublishTemplate
     local(@indexes)=keys(%subinfo);
     if ($#indexes<0)
     {
+       # print "<LI>Publishsing default subtemplate for $template\n";
        $templateinfo{SUBTEMPLATE}="default";
        local($publishfile)=&FindAndReplace($templateinfo{PUBLISHFILE2},%templateinfo);
        local($result)=open(PFILE,">$publishfile");
@@ -338,6 +355,7 @@ sub esx7_PublishTemplate
       {
        if ($sub ne "__HEADER__")
        {
+         # print "<LI>Publishsing subtemplate $sub\n";
          local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
 
          local($publishfile)=&FindAndReplace($subinfo{PUBLISHFILE2},%subinfo);

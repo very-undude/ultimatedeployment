@@ -19,7 +19,7 @@
 
 export MAJORVERSION=3
 export MINORVERSION=0
-export BUILD=160
+export BUILD=164
 export VERSION=${MAJORVERSION}.${MINORVERSION}
 export KERNEL=`uname -r`
 export ARCH=`uname -m`
