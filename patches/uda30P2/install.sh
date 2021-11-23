@@ -48,6 +48,10 @@ do
 done
 
 mkdir /var/public/www/ipxe/templates
+mkdir /var/public/www/ipxe/mac
+chown apache:apache /var/public/www/ipxe/templates
+chown apache:apache /var/public/www/ipxe/mac
+  
 
 ls -1 /var/public/www/ova | while read name
 do
@@ -65,7 +69,8 @@ done
 chown -hR apache:apache /local/ova
 
 cp $PATCHDIR/httpd.conf $HTTPDCONF
-sed -i '/Directory.*\/var\/public\/www/a \ \ \ \ Options +ExecCGI\n\ \ \ \ AddHandler cgi-script .cgi' $HTTPDCONF
+sed -i -E '/\s*Options\s+Indexes\s+FollowSymLinks\s*$/a AddHandler cgi-script .cgi' $HTTPDCONF
+sed -i -E 's/\s*Options\s+Indexes\s+FollowSymLinks\s*$/  Options Indexes FollowSymLinks ExecCGI/g' $HTTPDCONF
 
 # Change current dhcpd add a new part for efi
 cp $DHCPDCONF $DHCPDCONF.pre.$PATCHNAME
