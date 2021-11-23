@@ -3,6 +3,7 @@
 ./submit.sh storage/pub
 ./submit.sh system/ovftool
 ./submit.sh system/setvars
+./submit.sh system/upgrade
 
 #./submit.sh os/esx/esx7/create
 #./submit.sh templates/esx/esx7_efi/create
@@ -25,5 +26,5 @@
 #./submit.sh templates/windows/windows11/windows11x64/delete
 #./submit.sh os/windows/windows11x64/delete/
 
-./submit.sh os/centos/centos8x64/create
+#./submit.sh os/centos/centos8x64/create
 
