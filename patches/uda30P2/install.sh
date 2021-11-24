@@ -19,40 +19,52 @@
 
 PATCHDIR=$1
 PATCHNAME=uda30P2
-BUILD=164
-VERSIONFILE=/var/public/conf/version/uda_30_${BUILD}.dat
+BUILD=`cat $PATCHDIR/build.dat`
+ASSERTFILE1=/var/public/conf/version/uda_30_143.dat
+SIGNATURE=/var/public/conf/version/uda_30_${BUILD}.dat
 HTTPDCONF=/var/public/files/httpd.conf
 DHCPDCONF=/var/public/files/dhcpd.conf
 DHCPDCONFADD=$PATCHDIR/dhcpd.add
 
-# do we need to install this patch?
-if [ -f $VERSIONFILE ]
+echo Checking if we can install this patch
+if [ ! -f $ASSERTFILE1 ]
+then
+  echo Patch $PATCHNAME can only be installed on build 143
+  exit 0
+fi
+
+echo Checking if we need to install this patch
+if [ -f $SIGNATURE ]
 then
   echo Patch $PATCHNAME is already installed on this system
   exit 0
 fi
 
+echo Stopping services
 systemctl stop httpd
 systemctl stop dhcpd
 
-# Copy old files out of the way
-cp $HTTPDCONF $PATCHDIR/httpd.conf
+echo Installing new packages
+rpm -ivh $PATCHDIR/patch-2.7.1-10.el7_5.x86_64.rpm
 
-tar -C / -xvzf $PATCHDIR/var.tgz 
+echo Untarring the new files
+tar -C / -xvzf $PATCHDIR/var.tgz --exclude httpd.conf
 
+# Changing ownerships to the untarred files and directories
 tar -tzf $PATCHDIR/var.tgz | while read filename
 do
   chown apache:apache /$filename
   DIRNAME=`dirname /$filename`
-  chown apache:apache $DIRNAME
+  chown -v apache:apache $DIRNAME
 done
 
+echo Creating new directories
 mkdir /var/public/www/ipxe/templates
 mkdir /var/public/www/ipxe/mac
 chown apache:apache /var/public/www/ipxe/templates
 chown apache:apache /var/public/www/ipxe/mac
   
-
+echo Making links to the ova files
 ls -1 /var/public/www/ova | while read name
 do
   mkdir /local/ova/builtin/$name
@@ -68,19 +80,37 @@ do
 done
 chown -hR apache:apache /local/ova
 
+echo Making changes to the httpd.conf
+cp $HTTPDCONF $PATCHDIR/httpd.conf
+sed -i -E '/\s*Options\s+Indexes\s+FollowSymLinks\s*$/a\ \ \ \ AddHandler cgi-script .cgi' $PATCHDIR/httpd.conf
+sed -i -E 's/\s*Options\s+Indexes\s+FollowSymLinks\s*$/    Options Indexes FollowSymLinks ExecCGI/g' $PATCHDIR/httpd.conf
+echo These are the changes made to $HTTPDCONF
+echo ===
+diff -u $PATCHDIR/httpd.conf $HTTPDCONF | tee $PATCHDIR/httpd.patch
+echo ===
+echo Run the following command to undo changes to the httpd.conf:
+echo patch -u $HTTPDCONF $PATCHDIR/httpd.patch
 cp $PATCHDIR/httpd.conf $HTTPDCONF
-sed -i -E '/\s*Options\s+Indexes\s+FollowSymLinks\s*$/a AddHandler cgi-script .cgi' $HTTPDCONF
-sed -i -E 's/\s*Options\s+Indexes\s+FollowSymLinks\s*$/  Options Indexes FollowSymLinks ExecCGI/g' $HTTPDCONF
 
-# Change current dhcpd add a new part for efi
-cp $DHCPDCONF $DHCPDCONF.pre.$PATCHNAME
-cp $DHCPDCONF $PATCHDIR/dhcpd.conf
+echo Making changes to the dhcpd.conf
+cat $DHCPDCONFADD > $PATCHDIR/dhcpd.conf
 IPADDR=`cat /etc/sysconfig/network-scripts/ifcfg-eth0 | grep IPADDR | cut -f2 -d=`
-sed -i -E "s/\[UDA_IPADDR\]/$IPADDR/g" $DHCPDCONFADD
-cat $DHCPDCONFADD > $DHCPDCONF
-cat $PATCHDIR/dhcpd.conf | sed 's/PXEClient/DISABLED/g' >> $DHCPDCONF
+sed -i -E "s/\[UDA_IPADDR\]/$IPADDR/g" $PATCHDIR/dhcpd.conf
+cat $DHCPDCONF >> $PATCHDIR/dhcpd.conf
+sed -i 's/PXEClient/DISABLED/g' $PATCHDIR/dhcpd.conf
+echo These are the changes made to the $DHCPDCONF
+echo ===
+diff -u $PATCHDIR/dhcpd.conf $DHCPDCONF | tee $PATCHDIR/dhcpd.patch
+echo ===
+echo Run the following command to undo changes to the dhcpd.conf:
+echo patch -u $DHCPDCONF $PATCHDIR/dhcpd.patch
+cp $PATCHDIR/dhcpd.conf $DHCPDCONF
 
-echo VERSION=$PATCHNAME > $VERSIONFILE
+echo Writing out the signature
+echo VERSION=$PATCHNAME > $SIGNATURE
+
+echo  Starting up services
 systemctl start dhcpd
 systemctl start httpd
 
+echo Done

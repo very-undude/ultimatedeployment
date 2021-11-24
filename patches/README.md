@@ -11,7 +11,7 @@ You can create a tgz file by running the following command from this directory:
 e.g.:
 
 ```
-tar -C uda30P1 -cvzf uda30P1.tgz .
+tar -C uda30P2 -cvzf uda30P2.tgz .
 ```
 
 # Patch list

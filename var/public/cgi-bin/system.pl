@@ -676,7 +676,7 @@ sub Version
 
   local(%config)=&GetVersionList();
   print " <TABLE BORDER=1>\n";
-  print "<TR CLASS=tableheader><TD>Module</TD><TD>Version</TD></TR>\n";
+  print "<TR CLASS=tableheader><TD>Build</TD><TD>Source</TD></TR>\n";
 
   for $item (keys(%config))
   {
