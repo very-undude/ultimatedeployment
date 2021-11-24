@@ -27,6 +27,5 @@
 #./submit.sh os/windows/windows11x64/delete/
 
 #./submit.sh os/centos/centos8x64/create
-
 #./submit.sh os/centos/centos7x64/create
 
