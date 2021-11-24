@@ -2,7 +2,7 @@
 
 * Download the latest release ova-file here:
 
-https://github.com/very-undude/ultimatedeployment/releases/download/v3.0.97/uda30build97.ova
+https://github.com/very-undude/ultimatedeployment/releases/download/v3.0.143/uda30build143.ova
 
 * Check out the Youtube channel with how-to videos here:
 
@@ -14,7 +14,7 @@ http://ultimatedeployment.org
 
 ## What is the Ultimate Deployment Appliance?
 
-* Unattended OS installations (Windows, Linux, ESX, Solaris) over the network set-up in minutes!
+* Unattended OS installations (Windows, Linux, ESX, Solaris) over the network, set-up in minutes!
 * PXE Booting, Remote Installation Services, Kickstart, Jumpstart, Autoyast in a box!
 * Free!
 
