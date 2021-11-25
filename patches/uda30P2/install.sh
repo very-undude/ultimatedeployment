@@ -129,6 +129,17 @@ do
   do
     echo Adding EFI parameters to template config $ostemplate
     cat $PATCHDIR/windows7.efi >> $ostemplate
+    TEMPLATE=`grep "^TEMPLATE=" $ostemplate | awk '{print $2}' FS=\=`
+    FLAVOR=`grep "^FLAVOR=" $ostemplate | awk '{print $2}' FS=\=`
+    echo Flavor = $FLAVOR
+    EXTRADIR=`grep "^DIR_1=" /var/public/conf/os/$FLAVOR.dat | awk '{print $2}' FS=\=`
+    echo extradir = $EXTRADIR
+    grep -i "windows 11" $EXTRADIR/install.xml > /dev/null
+    if [ $? -eq 0 ]
+    then
+      echo Found windows 11 template, changing template config file
+      sed -i "/ProtectYourPC/a \ \ \ \ \ \ \ \ \ \ \ <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>\n" /var/public/conf/templates/$TEMPLATE.cfg
+    fi
   done
 
   echo Changing Centos and Redhat templates
