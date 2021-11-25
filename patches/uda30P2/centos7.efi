@@ -1,0 +1,2 @@
+PUBLISHEFIDIR1=/var/public/www/ipxe/templates/[TEMPLATE]
+PUBLISHEFIFILE1=/var/public/www/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe

@@ -1,0 +1,5 @@
+PUBLISHEFIFILE2=/var/public/www/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].ipxe
+PUBLISHEFIDIR1=/var/public/www/ipxe/templates/[TEMPLATE]
+PUBLISHEFIFILE1=/var/public/www/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe
+PUBLISHEFIFILE3=/var/public/www/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].cfg
+PUBLISHEFILINK1=/var/public/www/ipxe/templates/[TEMPLATE]/files

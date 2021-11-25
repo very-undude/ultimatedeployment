@@ -113,4 +113,38 @@ echo  Starting up services
 systemctl start dhcpd
 systemctl start httpd
 
+echo Adding efi information to template files
+grep -L PUBLISHEFI /var/public/conf/templates/*.dat | while read template
+do
+  
+  echo Changing ESX7 templates
+  grep -l -e "^OS=esx7$" -e "^OS=esx6$" -e "^OS=esx5$" $template | while read ostemplate
+  do
+    echo Adding EFI parameters to template config $ostemplate
+    cat $PATCHDIR/esx7.efi >> $ostemplate
+  done
+
+  echo Changing Windows templates
+  grep -l "^OS=windows7$" $template | while read ostemplate
+  do
+    echo Adding EFI parameters to template config $ostemplate
+    cat $PATCHDIR/windows7.efi >> $ostemplate
+  done
+
+  echo Changing Centos and Redhat templates
+  grep -l -e "^OS=centos7$" -e "^OS=centos8$" -e "^OS=redhat7$" -e "^OS=redhat8$" $template | while read ostemplate
+  do
+    echo Adding EFI parameters to template config $ostemplate
+    cat $PATCHDIR/centos7.efi >> $ostemplate
+  done
+
+done
+
+echo Republishing all templates
+chmod 755 $PATCHDIR/republish.pl
+$PATCHDIR/republish.pl
+echo Rebuilding windows wim files
+chmod 755 $PATCHDIR/rebuildwim.pl
+$PATCHDIR/rebuildwim.pl
+
 echo Done

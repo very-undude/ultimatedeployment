@@ -1,0 +1,8 @@
+PUBLISHEFIFILE2=/var/public/www/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].ipxe
+PUBLISHEFIFILE4=/var/public/www/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE]/uda.opt
+PUBLISHEFIDIR1=/var/public/www/ipxe/templates/[TEMPLATE]
+PUBLISHEFIFILE1=/var/public/www/ipxe/templates/[TEMPLATE]/[SUBTEMPLATE].cmd
+PUBLISHEFIFILE3=/var/public/www/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe
+PUBLISHEFILINK2=/var/public/www/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].bcd
+PUBLISHEFILINK3=/var/public/www/ipxe/templates/[TEMPLATE]/boot.wim
+PUBLISHEFILINK1=/var/public/www/ipxe/templates/[TEMPLATE]/files
