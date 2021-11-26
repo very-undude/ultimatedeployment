@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase "/" 
+RewriteRule "^.*(01-[0-9a-f\-]{17})/boot\.cfg$" "ipxe/scripts/get_config.cgi?mac=$1"

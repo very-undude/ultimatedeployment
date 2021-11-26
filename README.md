@@ -14,7 +14,7 @@ http://ultimatedeployment.org
 
 ## What is the Ultimate Deployment Appliance?
 
-* Unattended OS installations (Windows, Linux, ESX, Solaris) over the network set-up in minutes!
+* Unattended OS installations (Windows, Linux, ESX, Solaris) over the network, set-up in minutes!
 * PXE Booting, Remote Installation Services, Kickstart, Jumpstart, Autoyast in a box!
 * Free!
 

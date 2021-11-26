@@ -19,18 +19,37 @@ SET UNATTEND=%INSTALLDRIVE%:\pxelinux.cfg\templates\%UDA_TEMPLATE%\%UDA_SUBTEMPL
 SET REGEXE=%SYSTEMDRIVE%\windows\system32\reg.exe
 
 cd %UDADIR%
+if exist %SYSTEMDRIVE%\windows\system32\uda.opt goto EFI
 
-echo Preparing the diskpart file
-
+:BIOS
+echo BIOS selected
 echo select disk 0                                   >%DISKPARTTXT%
 echo clean                                           >>%DISKPARTTXT%
-echo create partition primary                        >>%DISKPARTTXT%
-echo select partition 1                              >>%DISKPARTTXT%
-echo active                                          >>%DISKPARTTXT%
-echo assign letter=c                                 >>%DISKPARTTXT%
+echo convert mbr >>%DISKPARTTXT%
+echo create partition primary size=1 >>%DISKPARTTXT%
+echo create partition primary >>%DISKPARTTXT%
+echo select partition 2 >>%DISKPARTTXT%
+echo active >>%DISKPARTTXT%
+echo assign letter=c >>%DISKPARTTXT%
 echo format fs=ntfs LABEL=^"Windows^" QUICK OVERRIDE >>%DISKPARTTXT%
 echo exit                                            >>%DISKPARTTXT%
+goto DISKPART
 
+:EFI
+echo EFI selected
+echo select disk 0 >%DISKPARTTXT%
+echo clean >>%DISKPARTTXT%
+echo convert gpt >>%DISKPARTTXT%
+echo create partition efi size=200 >>%DISKPARTTXT%
+echo create partition primary >>%DISKPARTTXT%
+echo select partition 2 >>%DISKPARTTXT%
+echo active >>%DISKPARTTXT%
+echo assign letter=c >>%DISKPARTTXT%
+echo format fs=ntfs LABEL=^"Windows^" QUICK OVERRIDE >>%DISKPARTTXT%
+echo exit >>%DISKPARTTXT%
+goto DISKPART
+
+:DISKPART
 echo.
 echo Partioning the disk
 %DISKPART% /s %DISKPARTTXT%

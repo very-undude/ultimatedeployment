@@ -763,8 +763,8 @@ sub ApplyEditTemplate
  local($ovasource)=$formdata{NEWOVASOURCE};
  local($ovadestination)=$formdata{NEWOVADESTINATION};
  local($ovaconfig)=$formdata{NEWOVACONFIG};
- local($ovamount)=$formdata{MOUNT};
- local($ovafile)=$formdata{FILE1};
+ local($ovamount)=$formdata{NEWOVAMOUNT};
+ local($ovafile)=$formdata{NEWOVAFILE};
 
  #print "<H1>$ovafile</H1>\n" ;
 
@@ -875,6 +875,15 @@ sub UnPublishTemplate
         return $result;
       }
     }
+    if ($infokey =~ /PUBLISHEFIDIR[0-9]+/)
+    {
+      local($deletedir)=&FindAndReplace($info{$infokey},%info);
+      local($result)=&RunCommand("rm -rf $deletedir","Deleting $deletedir");
+      if ($result)
+      {
+        return $result;
+      }
+    }
   }
 
   local($result)=&RunCommand($command,"Removing publishdir $info{PUBLISHDIR1}");
@@ -916,7 +925,6 @@ sub PublishTemplate
     local(@indexes)=keys(%subinfo);
     if ($#indexes<0)
     {
-       # print "<LI>Publishsing default subtemplate for $template\n";
        $info{SUBTEMPLATE}="default";
        local($publishfile)=&FindAndReplace($info{PUBLISHFILE1},%info);
        local($result)=open(PFILE,">$publishfile");
@@ -932,7 +940,6 @@ sub PublishTemplate
       {
        if ($sub ne "__HEADER__")
        {
-         # print "<LI>Publishsing subtemplate $sub\n";
          local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
      
          local($publishfile)=&FindAndReplace($subinfo{PUBLISHFILE1},%subinfo);
@@ -955,7 +962,16 @@ sub PublishTemplate
        if ($result) { return $result };
    }
 
+   if (defined(&{$info{OS}."_PublishEFITemplate"}))
+   {
+       local($result)=&{$info{OS}."_PublishEFITemplate"}($template);
+       if ($result) { return $result };
+   }
+
    local($result)=&WriteTemplatePXEMenu($template,%info);
+   if ($result) { return $result };
+
+   local($result)=&WriteTemplateEFIMenu($template,%info);
    if ($result) { return $result };
   }
 
@@ -1060,9 +1076,8 @@ sub ConfigureTemplate
   print "<INPUT TYPE=HIDDEN NAME=OS VALUE=$info{OS}>\n";
   print "<INPUT TYPE=HIDDEN NAME=FLAVOR VALUE=$info{FLAVOR}>\n";
   print "<INPUT TYPE=HIDDEN NAME=OVASOURCE VALUE=$info{OVASOURCE}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVASOURCE VALUE=$info{OVASOURCE}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVAMOUNT VALUE=$info{OVAMOUNT}>\n";
-  print "<INPUT TYPE=HIDDEN NAME=NEWOVAFILE VALUE=$info{OVAFILE}>\n";
+  print "<INPUT TYPE=HIDDEN NAME=OVAMOUNT VALUE=$info{OVAMOUNT}>\n";
+  print "<INPUT TYPE=HIDDEN NAME=OVAFILE VALUE=$info{OVAFILE}>\n";
   print "<TABLE>\n";
   print "<TR><TD>Template Name</TD><TD><INPUT TYPE=TEXT NAME=NEWTEMPLATE VALUE=\"$template\">\n";
   print "<TR><TD>Description</TD><TD><INPUT TYPE=TEXT NAME=NEWDESCRIPTION VALUE=\"$info{DESCRIPTION}\"></TD>
@@ -1123,11 +1138,11 @@ sub ConfigureTemplate
     local(@mountlist)=&GetMountList();;
     &PrintJavascriptArray("mountsarray",@mountlist);
     print "<script language='javascript' src='/js/loadvalues.js'></script>\n";
-    print "<script language='javascript' src='/js/tree.js'></script>\n";
+    print "<script language='javascript' src='/js/treeova.js'></script>\n";
     print "<TABLE>\n";
     #print "<TR><TD>Source</TD><TD><SELECT NAME=NEWOVASOURCE ID=NEWOVASOURCE></SELECT></TD></TR>\n";
-    print "<TR><TD VALIGN=TOP>Source</TD><TD><TABLE><TR><TD>Storage</TD><TD><SELECT NAME=MOUNT ID=MOUNT ONCHANGE=\"expand('/')\"></SELECT></TD></TR>\n";
-    print "<TR><TD>ImageFile</TD><TD><INPUT TYPE=TEXT NAME=FILE1 ID=FILE1 SIZE=60 VALUE=\"$info{OVAFILE}\"></TD></TR>\n";
+    print "<TR><TD VALIGN=TOP>Source</TD><TD><TABLE><TR><TD>Storage</TD><TD><SELECT NAME=NEWOVAMOUNT ID=NEWOVAMOUNT ONCHANGE=\"expandova('/')\"></SELECT></TD></TR>\n";
+    print "<TR><TD>ImageFile</TD><TD><INPUT TYPE=TEXT NAME=NEWOVAFILE ID=NEWOVAFILE SIZE=60 VALUE=\"$info{OVAFILE}\"></TD></TR>\n";
     print "<TR><TD COLSPAN=2><DIV ID=browse_div></DIV></TD></TR></TR></TABLE>\n";
     print "<TR><TD>Destination</TD><TD><INPUT TYPE=TEXT SIZE=50 ID=NEWOVADESTINATION NAME=NEWOVADESTINATION VALUE=\"$info{OVADESTINATION}\"></TD></TR>\n";
        
@@ -1150,13 +1165,13 @@ sub ConfigureTemplate
     print "</TD></TR></TABLE>";
 
     print "<script language='javascript'>\n";
-    print "LoadValues(\"MOUNT\",mountsarray);\n";
+    print "LoadValues(\"NEWOVAMOUNT\",mountsarray);\n";
     print "</script>\n";
 
     print "<script language=javascript>PreSelect(\"NEWOVAMOUNT\",\"$info{OVAMOUNT}\");</script>\n";
-    print "<script language=javascript>Update(\"$info{OVAMOUNT}\",\"$info{OVAFILE}\");</script>\n";
-    #print "<script language=javascript>expand(\"\");</script>\n";
+    print "<script language=javascript>UpdateOva(\"$info{OVAMOUNT}\",\"$info{OVAFILE}\");</script>\n";
 
+    #print "<script language=javascript>expandova(\"\");</script>\n";
     #print "<script language='javascript'>LoadValues(\"NEWOVASOURCE\",ovaarray);</script>\n";
   #} else {
   #  print "</DIV>\n";
@@ -1299,6 +1314,7 @@ sub DownloadSubTemplates
   print @thefile;
 }
 
+
 sub WriteTemplatePXEMenu
 {
   local($template)=shift;
@@ -1417,5 +1433,122 @@ sub WriteTemplatePXEMenu
   return 0
 }
 
+sub WriteTemplateEFIMenu
+{
+  local($template)=shift;
+  local($passwordenabled)=0;
+  local(%info)=&GetTemplateInfo($template);
+  local(%subs)=&GetAllSubTemplateInfo($template);
+
+  local(%subsort)=&GetSubTemplateSort($template);
+  local(@sublist)=keys(%subs);
+
+  local($templateefifile)=$EFITEMPLATEDIR."/$template/template.ipxe";
+
+  local($tpldir)="$EFITEMPLATEDIR/$template";
+  local($result)=&CreateDir($tpldir);
+  if ($result) { return 2; }
+
+  local($stpldir)="$EFITEMPLATEDIR/$template/subtemplates";
+  local($result)=&CreateDir($stpldir);
+  if ($result) { return 2; }
+
+  local($macdir)="$EFITEMPLATEDIR/$template/macs";
+  local($result)=&CreateDir($macdir);
+  if ($result) { return 2; }
+
+  local($result)=opendir(NEWDIR,$macdir);
+  while($newfn=readdir(NEWDIR))
+  {
+     if ($newfn =~ /^([0-9]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2}-[0-9A-Fa-f]{2})\.ipxe$/)
+     {
+       #print ("<LI>Removing file $macdir/$newfn\n");
+       &RunCommand("rm $macdir/$newfn","Removing Mac template file $macdir/$newfn");
+     }
+     if ($newfn =~ /^\.ipxe$/)
+     {
+       #print ("<LI>QnD Removing $macdir/$newfn\n");
+       &RunCommand("rm $macdir/$newfn","Removing QnD template mac file $macdir/$newfn");
+     }
+  }
+
+  local($headerline)=$subs{__HEADER__};
+  if ($#sublist > 0)
+  {
+   local($result)=open(EFIFILE,">$templateefifile");
+   local(@menuitem)=&GetConfigFile($IPXESUBMENUHEADER);
+   for $itemline (@menuitem)
+   {
+     local($newline)=&FindAndReplace($itemline,%info);
+     print EFIFILE $newline ;
+   }
+
+   for $cursubindex (sort(keys(%subsort)))
+   {
+     $item=$subsort{$cursubindex};
+     if ($item ne "__HEADER__")
+     {
+       local(%subinfo)=&GetSubTemplateInfo($headerline,$subs{$item},%info);
+       print EFIFILE "item $item $item\n"
+     }
+   }
+
+   local(@menuitem)=&GetConfigFile($IPXESUBMENUFOOTER);
+   for $itemline (@menuitem)
+   {
+     local($newline)=&FindAndReplace($itemline,%info);
+     print EFIFILE $newline ;
+   }
+
+   for $cursubindex (sort(keys(%subsort)))
+   {
+     $item=$subsort{$cursubindex};
+     if ($item ne "__HEADER__")
+     {
+       local(%subinfo)=&GetSubTemplateInfo($headerline,$subs{$item},%info);
+       print EFIFILE "\n:$item\n";
+       local($chain)="/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+       local($newchain)=&FindAndReplace($chain,%subinfo);
+       print EFIFILE "chain $newchain\n";
+       print EFIFILE "goto start\n\n";
+
+       if (defined($subinfo{MAC}) && $subinfo{MAC} ne "")
+       {
+         my($newmac)=$subinfo{MAC};
+         $newmac=~s/:/-/g;
+         local($MACFILE)=$macdir."/01-".$newmac.".ipxe" ;
+         local($result)=open(MF,">$MACFILE");
+         print MF "#!ipxe\n";
+         print MF "chain $newchain\n";
+         close(MF);
+       }
+     }
+   }
+
+   close(EFIFILE);
+
+ } else {
+   # print "<LI>NO subtemplates detected writing default file $templateefifile\n";
+   $info{SUBTEMPLATE}="default";
+   local($result)=open(EFIFILE,">$templateefifile");
+   print EFIFILE "#!ipxe\n";
+   local($chain)="/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+   local($newchain)=&FindAndReplace($chain,%info);
+   print EFIFILE "chain $newchain\n";
+   close(EFIFILE);
+
+   if (defined($info{MAC}) && $info{MAC} ne "")
+   {
+      my($newmac)=$info{MAC};
+      $newmac=~s/:/-/g;
+      local($MACFILE)=$macdir."/01-".$newmac.".ipxe" ;
+      local($result)=open(MF,">$MACFILE");
+      print MF "#!ipxe\n";
+      print MF "chain $newchain\n";
+      close(MF);
+   }
+ }
+  return 0
+}
 
 1;

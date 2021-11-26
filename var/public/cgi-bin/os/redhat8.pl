@@ -114,4 +114,11 @@ sub redhat8_ImportOS_DoIt
   return $result;
 }
 
+sub redhat8_PublishEFITemplate
+{
+  local($template)=shift;
+  local($result)=&kickstart_PublishEFITemplate($template);
+  return($result);
+}
+
 1;

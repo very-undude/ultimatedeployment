@@ -25,8 +25,9 @@ install
 text
 
 # Network install type
-#network --bootproto static --ip 192.168.3.103 --netmask 255.255.255.0 --gateway 192.168.3.254 --nameserver 192.168.3.130 --hostname esx3.vi3book.com --addvmportgroup=0 --vlanid=0
-network --bootproto dhcp
+# --device eth0
+network --bootproto static --ip 192.168.150.50 --netmask 255.255.255.0 --gateway 192.168.150.1 --nameserver 192.168.150.11 --hostname esx3.example.com --addvmportgroup=0 --vlanid=0
+#network --bootproto dhcp
 
 # Language
 lang en_US
@@ -127,5 +128,6 @@ cd /tmp
 /tmp/esxcfg.sh
 mv -f /etc/rc.d/rc.local.bak /etc/rc.d/rc.local
 EOF
+
 
 

@@ -1,0 +1,15 @@
+#!ipxe
+
+# Variables are specified in boot.ipxe.cfg
+
+# Some menu defaults
+set menu-timeout 5000
+set submenu-timeout ${menu-timeout}
+isset ${menu-default} || set menu-default exit
+
+###################### MAIN MENU ####################################
+
+:start
+menu Ultimate Deployment Appliance
+item --gap --             ------------------------- Subtemplates for template ESX7  ------------------------------
+

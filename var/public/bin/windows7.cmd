@@ -40,6 +40,9 @@ for /f "delims=:= tokens=1,2,3,4,5" %%A IN ("%UDAOPTION%") DO (
   SET UDA_DRIVER=%%E
 )
 
+echo Loading same options from uda.opt when we are booting from EFI with wimboot
+if exist %SYSTEMDRIVE%\windows\system32\uda.opt for /f "delims== tokens=1,2" %%G in (X:\windows\system32\uda.opt) do set %%G=%%H
+
 echo UDA Template info is:
 echo.
 echo UDA_IPADDR:       %UDA_IPADDR%

@@ -1,0 +1,5 @@
+accepteula
+rootpw Secrets01!
+install --firstdisk --overwritevmfs
+network --bootproto=dhcp --addvmportgroup=0
+reboot

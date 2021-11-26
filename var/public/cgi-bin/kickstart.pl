@@ -101,6 +101,20 @@ sub kickstart_GetDefaultKernel
   return $kernel;
 }
 
+sub kickstart_GetDefaultEFIPublishDir1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]";
+  return $publishdir;
+}
+
+
+sub kickstart_GetDefaultEFIPublishFile1
+{
+  local($publishdir)="$WWWDIR/ipxe/templates/[TEMPLATE]/subtemplates/[SUBTEMPLATE].ipxe";
+  return $publishdir;
+}
+
+
 sub kickstart_CreateTemplate
 {
   local($kickstartos)=shift;
@@ -134,6 +148,20 @@ sub kickstart_CreateTemplate
   $config{PUBLISHDIR1}=&{$kickstartos."_GetDefaultPublishDir"}($template);
   $config{CMDLINE}=&{$kickstartos."_GetDefaultCommandLine"}($template);
   $config{KERNEL}=&{$kickstartos."_GetDefaultKernel"}($template);
+
+  if(defined(&{$kickstartos."_GetDefaultEFIPublishFile1"}))
+  {
+    $config{PUBLISHEFIFILE1}=&{$kickstartos."_GetDefaultEFIPublishFile1"}($template);
+  } else {
+    $config{PUBLISHEFIFILE1}=&kickstart_GetDefaultEFIPublishFile1($template);
+  }
+  if(defined(&{$kickstartos."_GetDefaultEFIPublishFile1"}))
+  {
+    $config{PUBLISHEFIDIR1}=&{$kickstartos."_GetDefaultEFIPublishDir1"}($template);
+  } else {
+    $config{PUBLISHEFIDIR1}=&kickstart_GetDefaultEFIPublishDir1($template);
+  }
+
   for $item (keys(%formdata))
   {
     if ($item =~ /^KICKSTART_(.+)/)
@@ -571,6 +599,71 @@ sub kickstart_ImportOS_DoIt
 
   return 0;
 }
+
+sub kickstart_PublishEFITemplate
+{
+  local($template)=shift;
+
+  local(%templateinfo)=&GetTemplateInfo($template);
+  local(%osinfo)=&GetOSInfo($templateinfo{FLAVOR});
+
+  local($templatedir)=&FindAndReplace($templateinfo{PUBLISHEFIDIR1},%templateinfo);
+  local($result)=&CreateDir($templatedir);
+  if ($result) { return 2; }
+
+  local($result)=&CreateDir("$templatedir/subtemplates");
+  if ($result) { return 2; }
+
+
+  local(%subinfo)=&GetAllSubTemplateInfo($template);
+  local(@indexes)=keys(%subinfo);
+  if ($#indexes<0)
+  {
+    $templateinfo{SUBTEMPLATE}="default";
+
+    local($publishfile1)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%templateinfo);
+
+    local($kernelline)="kernel tftp://[UDA_IPADDR]/$templateinfo{KERNEL} $templateinfo{CMDLINE}";
+    local($newkernelline)=&FindAndReplace($kernelline,%templateinfo);
+
+    local($initrdline)="initrd tftp://[UDA_IPADDR]/initrd.$templateinfo{OS}.$templateinfo{FLAVOR}";
+    local($newinitrdline)=&FindAndReplace($initrdline,%templateinfo);
+
+    local($publishfile1)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%templateinfo);
+    local($result)=open(PFILE1,">$publishfile1");
+    print PFILE1 "#!ipxe\n";
+    print PFILE1 "$newkernelline\n";
+    print PFILE1 "$newinitrdline\n";
+    print PFILE1 "boot\n";
+    close(PFILE1);
+
+  } else  {
+    local($headerline)=$subinfo{__HEADER__};
+    for $sub (keys(%subinfo))
+    {
+      if ($sub ne "__HEADER__")
+      {
+        local(%subinfo)=&GetSubTemplateInfo($headerline,$subinfo{$sub},%info);
+
+        local($kernelline)="kernel tftp://[UDA_IPADDR]/$subinfo{KERNEL} $subinfo{CMDLINE}";
+        local($newkernelline)=&FindAndReplace($kernelline,%subinfo);
+
+        local($initrdline)="initrd tftp://[UDA_IPADDR]/initrd.$subinfo{OS}.$subinfo{FLAVOR}";
+        local($newinitrdline)=&FindAndReplace($initrdline,%subinfo);
+
+        local($publishfile1)=&FindAndReplace($templateinfo{PUBLISHEFIFILE1},%subinfo);
+        local($result)=open(PFILE1,">$publishfile1");
+        print PFILE1 "#!ipxe\n";
+        print PFILE1 "$newkernelline\n";
+        print PFILE1 "$newinitrdline\n";
+        print PFILE1 "boot\n";
+        close(PFILE1);
+      }
+    }
+  }
+  return 0;
+}
+
 
 1;
 
