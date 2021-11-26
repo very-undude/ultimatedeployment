@@ -4,6 +4,10 @@
 
 https://github.com/very-undude/ultimatedeployment/releases/download/v3.0.143/uda30build143.ova
 
+* Download the latest patch here:
+
+https://github.com/very-undude/ultimatedeployment/releases/download/v3.0P2/uda30P2.tgz
+
 * Check out the Youtube channel with how-to videos here:
 
 https://www.youtube.com/c/UltimateDeployment
