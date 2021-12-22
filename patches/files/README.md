@@ -17,3 +17,5 @@
   * FIX: GENERATEMAC boolean was not enforced for EFI templates
   * ADD: Introducing new patch format where last patch is the only one needed
 
+## uda30P4
+  * FIX: Mount after boot did not work properly

@@ -16,7 +16,3 @@ cat /var/public/files/issue.tpl | sed "s/\[IPADDRESS\]/$IPADDR/g" > /var/public/
 # Scan the current CD devices
 /var/public/bin/scancd.pl
 
-# Mount the mounts that are configured for on boot mounting
-/var/public/bin/mountboottime.pl
-
-

@@ -200,6 +200,11 @@ chown -h root:root /usr/lib/systemd/system/udaboot.service
 chmod 644 /usr/lib/systemd/system/udaboot.service
 touch /var/public/conf/firstboot.txt
 
+echo Installing UDA boot after network service
+cp -p /var/public/files/udabootnet.service /usr/lib/systemd/system/
+chown -h root:root /usr/lib/systemd/system/udabootnet.service
+chmod 644 /usr/lib/systemd/system/udabootnet.service
+
 echo Change https service PrivateTmp setting to prevent mount namespaces
 #sed -i 's/PrivateTmp=true/PrivateTmp=false/g' /etc/systemd/system/multi-user.target.wants/httpd.service
 #systemctl daemon-reload
@@ -228,6 +233,7 @@ systemctl disable NetworkManager.service
 echo Activating nescessary services
 systemctl enable atd.service
 systemctl enable udaboot.service
+systemctl enable udabootnet.service
 
 echo Resetting root password and admin web password
 echo admin | passwd root --stdin > /dev/null
