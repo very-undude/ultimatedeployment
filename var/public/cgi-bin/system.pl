@@ -179,9 +179,8 @@ sub ExtendVolume
   local(@result)=`echo "echo \'- - -\' \> /sys/class/scsi_host/host0/scan" | sudo su -`;
   #print "<PRE>@result</PRE>";
 
-  local($command)="ls -1 /dev/sd* | grep -v \/dev\/sda";
-  # local($command)="ls -1 /dev/sd*";
-  local(@devices)=`sudo $command`;
+  local($command)='perl -an -e \'print "/dev/$F[2]\n" if $F[2] !~ /^dm/ and $F[2] !~ /a[0-9]*$/\' /proc/diskstats';
+  local(@devices)=`$command`;
 
   if ($#devices<0)
   {
