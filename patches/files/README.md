@@ -19,3 +19,8 @@
 
 ## uda30P4
   * FIX: Mount after boot did not work properly
+
+## uda30P5
+  * FIX: GENERATEMAC during template creation was shown as TEXTBOX instead of CHECKBOX
+  * FIX: Generating MAC templates did not work properly
+
