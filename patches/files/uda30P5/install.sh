@@ -68,6 +68,10 @@ cp -p $PATCHDIR/files/templates.pl /var/public/cgi-bin/templates.pl
 chmod 755 /var/public/cgi-bin/templates.pl
 chown -h apache:apache /var/public/cgi-bin/templates.pl
 
+cp -p $PATCHDIR/files/config.pl /var/public/cgi-bin/config.pl
+chmod 755 /var/public/cgi-bin/config.pl
+chown -h apache:apache /var/public/cgi-bin/config.pl
+
 cp -p $PATCHDIR/files/vsim.pl /var/public/cgi-bin/os/vsim.pl
 chmod 755 /var/public/cgi-bin/os/vsim.pl
 chown -h apache:apache /var/public/cgi-bin/os/vsim.pl
