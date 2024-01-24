@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use Sys::Hostname;
+
 sub  FindAndReplace
 {
   local($line,%info)=@_;
@@ -1016,7 +1018,7 @@ sub GetOnlySystemVariables
    }
    close(NETWORKFILE);
 
-   $config{UDA_HOSTNAME}=`hostname`;
+   $config{UDA_HOSTNAME}=hostname;
 
    local($dnsfile)="/etc/resolv.conf";
    local($dnsnum)=1;
