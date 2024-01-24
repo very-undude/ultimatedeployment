@@ -130,7 +130,7 @@ sub NewTemplate
   print "<TR><TD>Operating System</TD><TD><SELECT NAME=OS ID=OS ONCHANGE='ReloadIndexedValues(\"OSFLAVOR\",flavorarray,this.options[this.selectedIndex].value);'></SELECT></TD></TR>\n";
   print "<TR><TD>Flavor</TD><TD><SELECT NAME=OSFLAVOR ID=OSFLAVOR></SELECT></TD></TR>\n";
   print "<TR><TD>Bind to MAC</TD><TD><INPUT TYPE=TEXT NAME=MAC></TD></TR>\n";
-  print "<TR><TD>Generate MAC Based PXE config</TD><TD><INPUT TYPE=TEXT NAME=GENERATEMAC></TD></TR>\n";
+  print "<TR><TD>Generate MAC Based PXE config</TD><TD><INPUT TYPE=CHECKBOX NAME=GENERATEMAC></TD></TR>\n";
   print "<TR><TD>Publish</TD><TD><INPUT TYPE=CHECKBOX NAME=PUBLISH CHECKED></TD></TR>\n";
   print "</TABLE>\n";
   print "</FORM>\n";
